@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0F1214;
+  --surface: #161B1E;
+  --surface-2: #1C2226;
+  --line: #2B3439;
+  --text: #E8E4D8;
+  --muted: #8E9993;
+  --accent: #E5A03A;
+  --amber-dim: #8A6224;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text);
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ibm-plex), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Strict: No hover transitions or animations anywhere */
+*, *::before, *::after {
+  transition-duration: 0s !important;
+  transition-property: none !important;
+}
+
+/* Ticker marquee animation (40s linear infinite) */
+@keyframes tickerLoop {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-33.3333%, 0, 0);
+  }
+}
+
+.ticker-track {
+  animation: tickerLoop 40s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+/* One-time scroll reveal */
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section-reveal {
+  animation: sectionFadeIn 300ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+/* Prefers-reduced-motion overrides */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  .ticker-track {
+    animation: none !important;
+  }
+  .section-reveal {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Focus outline */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
