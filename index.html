@@ -25,29 +25,29 @@
        CSS CUSTOM PROPERTIES AND RESET
        -------------------------------------------------- */
     :root {
-      /* Theme Palette: flat colors only, no secondary accent */
+      /* Palette Tokens */
       --bg: #0F1214;
       --surface: #161B1E;
+      --surface-2: #1C2226;
       --line: #2B3439;
       --text: #E8E4D8;
       --muted: #8E9993;
       --accent: #E5A03A;
+      --amber-dim: #8A6224;
 
       /* Typography */
       --font-heading: 'Chakra Petch', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
 
-      /* 8px Spacing Scale */
+      /* Spacing Scale */
       --space-1: 8px;
       --space-2: 16px;
       --space-3: 24px;
       --space-4: 32px;
-      --space-5: 40px;
       --space-6: 48px;
       --space-8: 64px;
       --space-10: 80px;
 
-      /* Layout */
       --max-width: 1120px;
     }
 
@@ -72,7 +72,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Selection */
     ::selection {
       background-color: var(--accent);
       color: var(--bg);
@@ -81,7 +80,7 @@
     /* --------------------------------------------------
        BASE TYPOGRAPHY & LINKS
        -------------------------------------------------- */
-    h1, h2, h3, h4, .section-label, .status-tag, .stat-name, .nav-link, .btn, .hud-link {
+    h1, h2, h3, h4, .section-label, .status-tag, .stat-name, .nav-link, .btn, .hud-link, .tool-tag, .roadmap-status, .card-label {
       font-family: var(--font-heading);
     }
 
@@ -90,7 +89,6 @@
       color: var(--text);
     }
 
-    /* Links: instant hover, zero transitions */
     a {
       color: var(--text);
       text-decoration: underline;
@@ -102,23 +100,92 @@
       color: var(--accent);
     }
 
-    /* Focus rings: high visibility amber outline */
     a:focus-visible,
     button:focus-visible,
-    canvas:focus-visible {
+    canvas:focus-visible,
+    summary:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 2px;
     }
 
-    /* --------------------------------------------------
-       LAYOUT CONTAINER & GRID
-       -------------------------------------------------- */
     .container {
       width: 100%;
       max-width: var(--max-width);
       margin: 0 auto;
       padding-left: var(--space-3);
       padding-right: var(--space-3);
+    }
+
+    /* --------------------------------------------------
+       WINDOW FRAME AND HUD (FIXED VIEWPORT OVERLAY)
+       -------------------------------------------------- */
+    .hud-window-frame {
+      position: fixed;
+      inset: 12px;
+      border: 1px solid var(--line);
+      pointer-events: none;
+      z-index: 900;
+    }
+
+    @media (max-width: 640px) {
+      .hud-window-frame {
+        inset: 6px;
+      }
+    }
+
+    .hud-readout-tl {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    .hud-readout-tr {
+      position: absolute;
+      top: 8px;
+      right: 12px;
+      font-family: var(--font-heading);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      line-height: 1;
+    }
+
+    @media (max-width: 640px) {
+      .hud-readout-tl,
+      .hud-readout-tr {
+        display: none;
+      }
+    }
+
+    .hud-top-xp-bar {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 3px;
+    }
+
+    .hud-top-segment {
+      width: 7px;
+      height: 4px;
+      border: 1px solid var(--line);
+      background-color: transparent;
+      border-radius: 0;
+    }
+
+    .hud-top-segment.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
     }
 
     /* --------------------------------------------------
@@ -176,7 +243,6 @@
       color: var(--text);
     }
 
-    /* Mobile Menu Toggle Button */
     .menu-toggle {
       display: none;
       background: transparent;
@@ -206,7 +272,6 @@
       padding: var(--space-3);
     }
 
-    /* Thin corner-bracket ticks on all 4 corners */
     .bracket {
       position: absolute;
       width: 6px;
@@ -240,6 +305,129 @@
       right: -1px;
       border-bottom: 1px solid var(--muted);
       border-right: 1px solid var(--muted);
+    }
+
+    /* --------------------------------------------------
+       SECTION NUMERALS & TITLES
+       -------------------------------------------------- */
+    .section-title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .section-num-outline {
+      font-family: var(--font-heading);
+      font-size: clamp(4.5rem, 12vw, 9rem);
+      font-weight: 600;
+      line-height: 0.8;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--line);
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .section-title-mask {
+      overflow: hidden;
+      display: block;
+    }
+
+    .section-heading-text {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      line-height: 1.05;
+      display: block;
+      transform: translateY(100%);
+      transition: transform 500ms ease;
+    }
+
+    .section-reveal.revealed .section-heading-text {
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .section-heading-text {
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* Alternating section backgrounds */
+    .bg-charcoal {
+      background-color: var(--bg);
+    }
+
+    .bg-surface {
+      background-color: var(--surface);
+    }
+
+    /* --------------------------------------------------
+       RULER DIVIDER
+       -------------------------------------------------- */
+    .ruler-divider-wrap {
+      width: 100%;
+      height: 16px;
+      overflow: hidden;
+      line-height: 0;
+    }
+
+    .ruler-divider {
+      width: 100%;
+      height: 16px;
+      display: block;
+    }
+
+    /* --------------------------------------------------
+       TICKER BAND
+       -------------------------------------------------- */
+    .ticker-band {
+      background-color: var(--text);
+      color: var(--bg);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .ticker-track {
+      display: flex;
+      width: max-content;
+      animation: ticker-scroll 40s linear infinite;
+    }
+
+    .ticker-items {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      padding-right: var(--space-4);
+    }
+
+    .ticker-bullet {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: var(--bg);
+    }
+
+    @keyframes ticker-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-track {
+        animation: none;
+      }
     }
 
     /* --------------------------------------------------
@@ -286,14 +474,14 @@
     }
 
     /* --------------------------------------------------
-       STATUS TAGS
+       STATUS TAGS & TOOL TAGS
        -------------------------------------------------- */
     .status-tag {
       display: inline-block;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
-      padding: 2px 8px;
+      padding: 3px 8px;
       border-radius: 0;
       border: 1px solid var(--line);
       color: var(--muted);
@@ -316,22 +504,47 @@
       color: var(--muted);
     }
 
-    /* --------------------------------------------------
-       HERO SECTION
-       -------------------------------------------------- */
-    .hero-section {
-      padding-top: var(--space-8);
-      padding-bottom: var(--space-6);
+    .tool-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 3px 8px;
+      border: 1px solid var(--line);
+      background-color: var(--surface-2);
+      color: var(--text);
+      border-radius: 0;
     }
 
-    .hero-meta {
+    /* --------------------------------------------------
+       HERO SECTION (FULL VIEWPORT HEIGHT)
+       -------------------------------------------------- */
+    .hero-section {
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: var(--space-6);
+      padding-bottom: var(--space-4);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-4);
       align-items: center;
-      gap: var(--space-1);
+      margin-bottom: var(--space-4);
+    }
+
+    .hero-left {
+      grid-column: span 7;
+    }
+
+    .hero-tag-wrap {
       margin-bottom: var(--space-2);
     }
 
-    .hero-profile-tag {
+    .hero-hud-tag {
       font-family: var(--font-heading);
       font-size: 12px;
       font-weight: 600;
@@ -340,41 +553,155 @@
       text-transform: uppercase;
     }
 
-    .hero-title {
-      font-size: clamp(32px, 5vw, 52px);
+    .hero-name-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: var(--space-2);
+    }
+
+    .hero-name-solid {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 11vw, 9rem);
       font-weight: 600;
-      line-height: 1.1;
+      line-height: 0.9;
       letter-spacing: 0.02em;
       color: var(--text);
-      margin-bottom: var(--space-2);
       text-transform: uppercase;
     }
 
-    .hero-line {
+    .hero-name-outlined {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 11vw, 9rem);
+      font-weight: 600;
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--text);
+      text-transform: uppercase;
+    }
+
+    .hero-statement {
       font-size: clamp(17px, 1.3vw, 20px);
       line-height: 1.5;
       color: var(--text);
       margin-bottom: var(--space-1);
     }
 
-    .hero-subline {
+    .hero-institution {
       font-size: 14px;
       color: var(--muted);
       margin-bottom: var(--space-3);
     }
 
-    /* Skip Game Link */
+    /* Player Card (Hero Right) */
+    .hero-right {
+      grid-column: span 5;
+    }
+
+    .player-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: var(--space-3);
+    }
+
+    .player-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: var(--space-1);
+      margin-bottom: var(--space-2);
+      font-family: var(--font-heading);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .avatar-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: var(--space-3);
+      padding: var(--space-2) 0;
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+    }
+
+    .avatar-wrapper .pixel-sprite {
+      width: 128px;
+      height: 128px;
+      display: block;
+    }
+
+    .avatar-photo-fallback {
+      display: none;
+      width: 128px;
+      height: 128px;
+      object-fit: cover;
+      filter: grayscale(100%);
+      border: 1px solid var(--line);
+    }
+
+    .player-card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: var(--font-heading);
+      font-size: 13px;
+    }
+
+    .card-meta-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-meta-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .card-label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .card-value {
+      color: var(--text);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .online-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent);
+    }
+
+    /* Mini-Game Wide Strip */
+    .hero-bottom {
+      width: 100%;
+      margin-top: var(--space-2);
+    }
+
     .skip-game-bar {
       display: flex;
       justify-content: flex-end;
-      margin-top: var(--space-4);
-      margin-bottom: var(--space-1);
+      margin-bottom: 4px;
     }
 
     .skip-game-link {
       font-family: var(--font-heading);
-      font-size: 12px;
-      letter-spacing: 0.05em;
+      font-size: 11px;
+      letter-spacing: 0.06em;
       color: var(--muted);
       text-decoration: underline;
     }
@@ -383,20 +710,16 @@
       color: var(--accent);
     }
 
-    /* --------------------------------------------------
-       MINI-GAME PANEL
-       -------------------------------------------------- */
-    .game-panel {
+    .game-panel-strip {
       padding: var(--space-2);
       background-color: var(--surface);
-      margin-top: var(--space-1);
     }
 
     .game-hud-bar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 var(--space-1) var(--space-1) var(--space-1);
+      padding-bottom: var(--space-1);
       border-bottom: 1px solid var(--line);
       margin-bottom: var(--space-1);
       font-family: var(--font-heading);
@@ -410,19 +733,24 @@
       text-transform: uppercase;
     }
 
-    .game-hud-xp {
+    .game-hud-scores {
+      display: flex;
+      gap: var(--space-2);
       font-size: 13px;
       font-weight: 600;
       letter-spacing: 0.08em;
+    }
+
+    .score-block {
       color: var(--text);
     }
 
-    .game-hud-xp .xp-label {
+    .score-block .label {
       color: var(--muted);
       margin-right: 4px;
     }
 
-    .game-hud-xp .xp-value {
+    .score-block .val {
       color: var(--accent);
     }
 
@@ -435,7 +763,8 @@
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 5;
+      aspect-ratio: 16 / 4.5;
+      max-height: 220px;
       background-color: var(--surface);
       cursor: pointer;
     }
@@ -444,7 +773,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: var(--space-1) var(--space-1) 0 var(--space-1);
+      padding-top: var(--space-1);
       border-top: 1px solid var(--line);
       margin-top: var(--space-1);
       font-family: var(--font-heading);
@@ -455,21 +784,12 @@
     }
 
     /* --------------------------------------------------
-       SECTION STRUCTURE & NUMBERED LABELS
+       SECTION STRUCTURE
        -------------------------------------------------- */
     .portfolio-section {
       padding-top: var(--space-8);
-      padding-bottom: var(--space-6);
+      padding-bottom: var(--space-8);
       border-top: 1px solid var(--line);
-    }
-
-    .section-label {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      margin-bottom: var(--space-3);
-      text-transform: uppercase;
     }
 
     .section-lead {
@@ -482,7 +802,7 @@
     /* --------------------------------------------------
        01 / ABOUT (CHARACTER SHEET)
        -------------------------------------------------- */
-    .about-layout {
+    .about-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       gap: var(--space-4);
@@ -501,7 +821,7 @@
 
     .about-stats {
       grid-column: span 6;
-      background-color: var(--surface);
+      background-color: var(--surface-2);
     }
 
     .stats-header {
@@ -572,63 +892,296 @@
     }
 
     /* --------------------------------------------------
-       02 / PROJECTS & 03 / ACHIEVEMENTS (RULED ROWS)
+       02 / ROADMAP (SKILL TREE)
        -------------------------------------------------- */
-    .ruled-list {
-      border-top: 1px solid var(--line);
-      width: 100%;
+    .roadmap-tree-panel {
+      background-color: var(--surface);
+      padding: var(--space-4);
+      margin-top: var(--space-3);
     }
 
-    .ruled-row {
-      display: grid;
-      grid-template-columns: 140px 1fr 180px 100px;
-      gap: var(--space-3);
-      align-items: baseline;
-      padding-top: var(--space-3);
+    .roadmap-track {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
       padding-bottom: var(--space-3);
-      border-bottom: 1px solid var(--line);
     }
 
-    .ruled-row-project .col-status {
-      align-self: start;
+    .roadmap-connectors-svg {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .ruled-row-project .col-main {
-      min-width: 0;
+    .roadmap-node-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      width: 130px;
     }
 
-    .row-title {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+    .roadmap-node-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background-color: var(--surface-2);
+      border: 1.5px solid var(--line);
+      transition: none;
+      padding: 0;
+      margin-bottom: var(--space-1);
+    }
+
+    .roadmap-node-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .roadmap-node-btn.node-unlocked {
+      background-color: var(--text);
+      border-color: var(--text);
+    }
+
+    .roadmap-node-btn.node-in-progress {
+      background-color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .roadmap-node-btn.node-next-goal {
+      background-color: transparent;
+      border: 1.5px dashed var(--line);
+    }
+
+    .roadmap-node-btn.is-selected {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .roadmap-node-label {
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.3;
       color: var(--text);
       margin-bottom: 4px;
     }
 
-    .row-desc {
+    .roadmap-status-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border: 1px solid var(--line);
+      text-transform: uppercase;
+      color: var(--muted);
+      background-color: var(--bg);
+    }
+
+    .status-badge-unlocked {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+
+    .status-badge-progress {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .status-badge-next {
+      color: var(--muted);
+      border-color: var(--line);
+    }
+
+    .roadmap-note-panel {
+      margin-top: var(--space-3);
+      background-color: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: var(--space-2) var(--space-3);
+      font-family: var(--font-heading);
+      font-size: 14px;
+      color: var(--text);
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+    }
+
+    .roadmap-note-panel .note-prefix {
+      color: var(--accent);
+      margin-right: 8px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .roadmap-track {
+        flex-direction: column;
+        gap: var(--space-3);
+      }
+
+      .roadmap-connectors-svg {
+        display: none;
+      }
+
+      .roadmap-node-wrap {
+        flex-direction: row;
+        width: 100%;
+        text-align: left;
+        gap: var(--space-2);
+      }
+
+      .roadmap-node-btn {
+        flex-shrink: 0;
+        margin-bottom: 0;
+      }
+    }
+
+    /* --------------------------------------------------
+       03 / PROJECTS ("QUEST LOG")
+       -------------------------------------------------- */
+    .quest-log-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      width: 100%;
+    }
+
+    .quest-item-panel {
+      background-color: var(--surface-2);
+      padding: var(--space-4);
+    }
+
+    .quest-item-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .quest-col-content {
+      grid-column: span 9;
+    }
+
+    .quest-col-sprite {
+      grid-column: span 3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quest-sprite-container {
+      width: 128px;
+      height: 128px;
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quest-sprite-container .pixel-sprite {
+      width: 96px;
+      height: 96px;
+      display: block;
+    }
+
+    .quest-meta-top {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-bottom: var(--space-1);
+    }
+
+    .quest-index-num {
+      font-family: var(--font-heading);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    .quest-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text);
+      margin-bottom: var(--space-1);
+    }
+
+    .quest-desc {
       font-size: 15px;
       color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 6px;
+      line-height: 1.6;
+      margin-bottom: var(--space-2);
     }
 
-    .row-tools {
-      font-size: 13px;
-      color: var(--muted);
-      font-family: var(--font-body);
+    .quest-tools-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: var(--space-2);
     }
 
-    .row-tools-label {
-      color: var(--text);
+    .quest-details-toggle {
+      margin-top: var(--space-2);
+      border-top: 1px solid var(--line);
+      padding-top: var(--space-1);
+    }
+
+    .quest-details-toggle summary {
       font-family: var(--font-heading);
       font-size: 12px;
-      letter-spacing: 0.05em;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      cursor: pointer;
       text-transform: uppercase;
-      margin-right: 4px;
+      user-select: none;
     }
 
-    .col-action {
-      text-align: right;
+    .quest-details-toggle summary:hover {
+      text-decoration: underline;
+    }
+
+    .quest-details-content {
+      margin-top: var(--space-1);
+      padding: var(--space-2);
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .quest-detail-line {
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    .quest-detail-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .quest-detail-label {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      color: var(--text);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-right: 6px;
+    }
+
+    .quest-actions-row {
+      display: flex;
+      justify-content: flex-start;
+      margin-top: var(--space-2);
     }
 
     .hud-link {
@@ -645,33 +1198,114 @@
       color: var(--accent);
     }
 
-    /* Certificates Rows */
-    .cert-row {
-      grid-template-columns: 1fr 200px 140px 90px;
-    }
-
-    .cert-issuer {
-      font-size: 14px;
+    /* Template row subdued title */
+    .template-item .quest-title {
       color: var(--muted);
     }
 
-    .cert-date {
-      font-size: 14px;
-      font-family: var(--font-heading);
-      letter-spacing: 0.04em;
-      color: var(--muted);
-    }
+    @media (max-width: 768px) {
+      .quest-item-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
 
-    /* Template row styling */
-    .template-row .row-title {
-      color: var(--muted);
+      .quest-col-sprite {
+        width: 100%;
+        justify-content: flex-start;
+        margin-bottom: var(--space-2);
+      }
     }
 
     /* --------------------------------------------------
-       04 / LOADOUT (TOOLS)
+       04 / ACHIEVEMENTS (CERTIFICATES)
+       -------------------------------------------------- */
+    .achievements-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: var(--space-1);
+      margin-bottom: var(--space-3);
+    }
+
+    .unlocked-counter {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .cert-table {
+      border-top: 1px solid var(--line);
+      width: 100%;
+    }
+
+    .cert-row {
+      display: grid;
+      grid-template-columns: 140px 32px 1fr 180px 100px;
+      gap: var(--space-3);
+      align-items: center;
+      padding-top: var(--space-3);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cert-date-col {
+      font-family: var(--font-heading);
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .cert-medal-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cert-medal-col .pixel-sprite {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .cert-title-col h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cert-issuer-col {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .cert-action-col {
+      text-align: right;
+    }
+
+    @media (max-width: 840px) {
+      .cert-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+
+      .cert-action-col {
+        text-align: left;
+        margin-top: 4px;
+      }
+    }
+
+    /* --------------------------------------------------
+       05 / LOADOUT (TOOLS)
        -------------------------------------------------- */
     .loadout-panel {
-      background-color: var(--surface);
+      background-color: var(--surface-2);
     }
 
     .loadout-grid {
@@ -698,22 +1332,52 @@
       border-bottom: 1px solid var(--line);
     }
 
+    @media (max-width: 640px) {
+      .loadout-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-2);
+      }
+    }
+
     /* --------------------------------------------------
-       05 / CONTACT
+       06 / CONTACT (INVERTED BONE BACKGROUND)
        -------------------------------------------------- */
+    .contact-section-inverted {
+      background-color: #E8E4D8 !important;
+      color: #0F1214 !important;
+    }
+
+    .contact-section-inverted .section-heading-text,
+    .contact-section-inverted .contact-heading,
+    .contact-section-inverted p,
+    .contact-section-inverted .contact-label,
+    .contact-section-inverted .contact-link {
+      color: #0F1214 !important;
+    }
+
+    .contact-section-inverted .section-num-outline {
+      -webkit-text-stroke: 1px rgba(15, 18, 20, 0.25) !important;
+    }
+
+    .contact-section-inverted .contact-lead {
+      color: #2B3439 !important;
+    }
+
     .contact-heading {
       font-size: clamp(24px, 3vw, 32px);
       font-weight: 600;
       text-transform: uppercase;
       margin-bottom: var(--space-2);
-      color: var(--text);
+      display: flex;
+      align-items: center;
     }
 
-    .contact-lead {
-      font-size: 16px;
-      color: var(--muted);
-      margin-bottom: var(--space-4);
-      max-width: 68ch;
+    .single-amber-accent {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent);
+      margin-left: 8px;
     }
 
     .contact-list {
@@ -721,7 +1385,7 @@
       display: flex;
       flex-direction: column;
       gap: var(--space-2);
-      border-top: 1px solid var(--line);
+      border-top: 1px solid rgba(15, 18, 20, 0.2);
       padding-top: var(--space-3);
     }
 
@@ -737,20 +1401,20 @@
       font-size: 14px;
       font-weight: 600;
       letter-spacing: 0.06em;
-      color: var(--muted);
+      color: #2B3439 !important;
       min-width: 80px;
       text-transform: uppercase;
     }
 
     .contact-link {
       font-family: var(--font-body);
-      color: var(--text);
+      color: #0F1214 !important;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
 
     .contact-link:hover {
-      color: var(--accent);
+      color: var(--accent) !important;
     }
 
     /* --------------------------------------------------
@@ -759,19 +1423,29 @@
     .site-footer {
       border-top: 1px solid var(--line);
       padding: var(--space-4) 0;
-      margin-top: var(--space-6);
+      background-color: var(--bg);
     }
 
     .footer-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-2);
     }
 
     .footer-credit {
       font-family: var(--font-heading);
       font-size: 13px;
       letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .footer-keys-hint {
+      font-family: var(--font-heading);
+      font-size: 11px;
+      letter-spacing: 0.06em;
       color: var(--muted);
       text-transform: uppercase;
     }
@@ -790,7 +1464,6 @@
       transform: translateY(0);
     }
 
-    /* Reduced Motion */
     @media (prefers-reduced-motion: reduce) {
       .section-reveal {
         opacity: 1 !important;
@@ -799,28 +1472,7 @@
       }
     }
 
-    /* --------------------------------------------------
-       RESPONSIVE BREAKPOINTS
-       -------------------------------------------------- */
-    @media (max-width: 900px) {
-      .about-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .about-bio,
-      .about-stats {
-        grid-column: span 1;
-      }
-
-      .ruled-row {
-        grid-template-columns: 120px 1fr 140px 80px;
-      }
-
-      .cert-row {
-        grid-template-columns: 1fr 140px 110px 80px;
-      }
-    }
-
+    /* Mobile Nav Dropdown */
     @media (max-width: 768px) {
       .menu-toggle {
         display: block;
@@ -851,42 +1503,25 @@
         display: block;
         padding: 4px 0;
       }
-
-      .ruled-row {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-1);
-        align-items: flex-start;
-      }
-
-      .col-action {
-        text-align: left;
-        margin-top: 4px;
-      }
-
-      .cert-row {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-      }
-
-      .loadout-grid {
-        grid-template-columns: 1fr;
-        gap: var(--space-2);
-      }
-
-      .contact-item {
-        flex-direction: column;
-        gap: 2px;
-      }
-
-      .contact-label {
-        min-width: auto;
-      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Fixed Window HUD Frame & Corner Readouts -->
+  <div class="hud-window-frame" aria-hidden="true">
+    <span class="bracket bracket-tl"></span>
+    <span class="bracket bracket-tr"></span>
+    <span class="bracket bracket-bl"></span>
+    <span class="bracket bracket-br"></span>
+
+    <div id="hudSectionReadout" class="hud-readout-tl">SEC // HERO</div>
+    <div id="hudScrollReadout" class="hud-readout-tr">SCROLL: 0%</div>
+
+    <div class="hud-top-xp-bar" id="hudXpSegments">
+      <span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span><span class="hud-top-segment"></span>
+    </div>
+  </div>
 
   <!-- Sticky Top Bar -->
   <header class="site-header">
@@ -896,68 +1531,143 @@
       <nav id="mainNav" class="site-nav" aria-label="Main Navigation">
         <ul class="nav-list">
           <li><a href="#about" class="nav-link">01 / ABOUT</a></li>
-          <li><a href="#projects" class="nav-link">02 / PROJECTS</a></li>
-          <li><a href="#achievements" class="nav-link">03 / ACHIEVEMENTS</a></li>
-          <li><a href="#loadout" class="nav-link">04 / LOADOUT</a></li>
-          <li><a href="#contact" class="nav-link">05 / CONTACT</a></li>
+          <li><a href="#roadmap" class="nav-link">02 / ROADMAP</a></li>
+          <li><a href="#projects" class="nav-link">03 / PROJECTS</a></li>
+          <li><a href="#achievements" class="nav-link">04 / ACHIEVEMENTS</a></li>
+          <li><a href="#loadout" class="nav-link">05 / LOADOUT</a></li>
+          <li><a href="#contact" class="nav-link">06 / CONTACT</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- Hero Section -->
-    <section class="hero-section section-reveal" id="hero">
+    <!-- HERO SECTION (FULL VIEWPORT HEIGHT) -->
+    <section class="hero-section section-reveal bg-charcoal" id="hero">
       <div class="container">
-        <div class="hero-meta">
-          <span class="hero-profile-tag">PLAYER PROFILE</span>
-        </div>
-        <h1 class="hero-title">Naman Lunia</h1>
-        <p class="hero-line">First-year Computer Science student building real projects and working toward a career in game development.</p>
-        <p class="hero-subline">B.Tech CSE with AI and ML specialisation, Newton School of Technology</p>
+        <div class="hero-grid">
+          <!-- Left Column -->
+          <div class="hero-left">
+            <div class="hero-tag-wrap">
+              <span class="hero-hud-tag">PLAYER PROFILE // INIT</span>
+            </div>
+            <div class="hero-name-group">
+              <span class="hero-name-solid">NAMAN</span>
+              <span class="hero-name-outlined">LUNIA</span>
+            </div>
+            <h1 class="hero-statement">First-year Computer Science student building real projects and working toward a career in game development.</h1>
+            <p class="hero-institution">B.Tech CSE with AI and ML specialisation, Newton School of Technology</p>
 
-        <div class="btn-group">
-          <a href="#projects" class="btn btn-primary">View projects</a>
-          <a href="#contact" class="btn btn-secondary">Get in touch</a>
-        </div>
-
-        <!-- Skip game link for accessibility -->
-        <div class="skip-game-bar">
-          <a href="#about" class="skip-game-link">Skip game to About</a>
-        </div>
-
-        <!-- Mini-Game Panel (16:5 HUD Canvas) -->
-        <div class="hud-panel game-panel" id="gameContainer">
-          <span class="bracket bracket-tl" aria-hidden="true"></span>
-          <span class="bracket bracket-tr" aria-hidden="true"></span>
-          <span class="bracket bracket-bl" aria-hidden="true"></span>
-          <span class="bracket bracket-br" aria-hidden="true"></span>
-
-          <div class="game-hud-bar">
-            <span class="game-hud-title">SIMULATION // AVOID OBSTACLES</span>
-            <div class="game-hud-xp">
-              <span class="xp-label">XP:</span>
-              <span id="gameXp" class="xp-value">0</span>
+            <div class="btn-group">
+              <a href="#projects" class="btn btn-primary">View projects</a>
+              <a href="#contact" class="btn btn-secondary">Get in touch</a>
             </div>
           </div>
 
-          <div class="game-canvas-wrapper">
-            <canvas id="gameCanvas" width="800" height="250" tabindex="0" role="application" aria-label="Obstacle avoidance runner game. Jump with Space, Up Arrow, or tap."></canvas>
+          <!-- Right Column: Player Card -->
+          <div class="hero-right">
+            <div class="hud-panel player-card">
+              <span class="bracket bracket-tl" aria-hidden="true"></span>
+              <span class="bracket bracket-tr" aria-hidden="true"></span>
+              <span class="bracket bracket-bl" aria-hidden="true"></span>
+              <span class="bracket bracket-br" aria-hidden="true"></span>
+
+              <div class="player-card-header">
+                <span>IDENTITY MATRIX</span>
+                <span>ID: NL-2026</span>
+              </div>
+
+              <div class="avatar-wrapper">
+                <img src="assets/photo.jpg" alt="Naman Lunia photo" class="avatar-photo-fallback" onerror="this.style.display='none';">
+                <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="0" width="6" height="1" fill="#E5A03A"/><rect x="3" y="1" width="8" height="1" fill="#E5A03A"/><rect x="2" y="2" width="1" height="1" fill="#8A6224"/><rect x="3" y="2" width="8" height="1" fill="#E5A03A"/><rect x="11" y="2" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="1" height="1" fill="#8A6224"/><rect x="3" y="3" width="3" height="1" fill="#E5A03A"/><rect x="6" y="3" width="3" height="1" fill="#8A6224"/><rect x="9" y="3" width="2" height="1" fill="#E5A03A"/><rect x="11" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="1" height="1" fill="#2B3439"/><rect x="4" y="4" width="6" height="1" fill="#E8E4D8"/><rect x="11" y="4" width="1" height="1" fill="#2B3439"/><rect x="2" y="5" width="1" height="1" fill="#2B3439"/><rect x="4" y="5" width="1" height="1" fill="#E8E4D8"/><rect x="5" y="5" width="1" height="1" fill="#8A6224"/><rect x="6" y="5" width="2" height="1" fill="#E8E4D8"/><rect x="8" y="5" width="1" height="1" fill="#8A6224"/><rect x="9" y="5" width="1" height="1" fill="#E8E4D8"/><rect x="11" y="5" width="1" height="1" fill="#2B3439"/><rect x="2" y="6" width="1" height="1" fill="#2B3439"/><rect x="4" y="6" width="6" height="1" fill="#E8E4D8"/><rect x="11" y="6" width="1" height="1" fill="#2B3439"/><rect x="2" y="7" width="1" height="1" fill="#2B3439"/><rect x="4" y="7" width="1" height="1" fill="#2B3439"/><rect x="5" y="7" width="3" height="1" fill="#E8E4D8"/><rect x="8" y="7" width="1" height="1" fill="#8A6224"/><rect x="9" y="7" width="1" height="1" fill="#2B3439"/><rect x="11" y="7" width="1" height="1" fill="#2B3439"/><rect x="4" y="8" width="1" height="1" fill="#E5A03A"/><rect x="5" y="8" width="4" height="1" fill="#E8E4D8"/><rect x="5" y="9" width="4" height="1" fill="#E8E4D8"/><rect x="4" y="10" width="6" height="1" fill="#1C2226"/><rect x="3" y="11" width="8" height="1" fill="#1C2226"/><rect x="2" y="12" width="4" height="1" fill="#1C2226"/><rect x="6" y="12" width="1" height="1" fill="#E5A03A"/><rect x="7" y="12" width="5" height="1" fill="#1C2226"/><rect x="1" y="13" width="5" height="1" fill="#1C2226"/><rect x="6" y="13" width="1" height="1" fill="#E5A03A"/><rect x="7" y="13" width="6" height="1" fill="#1C2226"/><rect x="0" y="14" width="6" height="1" fill="#1C2226"/><rect x="6" y="14" width="1" height="1" fill="#E5A03A"/><rect x="7" y="14" width="7" height="1" fill="#1C2226"/><rect x="0" y="15" width="14" height="1" fill="#1C2226"/></svg>
+              </div>
+
+              <div class="player-card-meta">
+                <div class="card-meta-row">
+                  <span class="card-label">CLASS:</span>
+                  <span class="card-value">CSE, AI and ML</span>
+                </div>
+                <div class="card-meta-row">
+                  <span class="card-label">GUILD:</span>
+                  <span class="card-value">Newton School of Technology</span>
+                </div>
+                <div class="card-meta-row">
+                  <span class="card-label">GOAL:</span>
+                  <span class="card-value">Game Developer</span>
+                </div>
+                <div class="card-meta-row">
+                  <span class="card-label">STATUS:</span>
+                  <span class="card-value">Online <span class="online-indicator" aria-hidden="true"></span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mini-Game Panel (Wide Strip Across Bottom) -->
+        <div class="hero-bottom">
+          <div class="skip-game-bar">
+            <a href="#about" class="skip-game-link">Skip game to About</a>
           </div>
 
-          <div class="game-hint-bar">
-            <span>INPUT: SPACE / UP ARROW / CLICK / TAP TO JUMP</span>
-            <span>STATUS: ACTIVE</span>
+          <div class="hud-panel game-panel-strip" id="gameContainer">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="game-hud-bar">
+              <span class="game-hud-title">PARALLAX RUNNER // AVOID OBSTACLES</span>
+              <div class="game-hud-scores">
+                <div class="score-block"><span class="label">XP:</span><span id="gameXp" class="val">0</span></div>
+                <div class="score-block"><span class="label">HI:</span><span id="gameHi" class="val">0</span></div>
+              </div>
+            </div>
+
+            <div class="game-canvas-wrapper">
+              <canvas id="gameCanvas" width="800" height="220" tabindex="0" role="application" aria-label="One-button runner mini-game. Press Space, Up Arrow, or Tap to jump. Press Down Arrow or Hold to duck."></canvas>
+            </div>
+
+            <div class="game-hint-bar">
+              <span>CONTROLS: SPACE / UP / CLICK TO JUMP | DOWN / HOLD TO DUCK</span>
+              <span>PARALLAX: 3-TIER ACTIVE</span>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 01 / ABOUT (Character Sheet) -->
-    <section class="portfolio-section section-reveal" id="about">
+    <!-- Ticker Band -->
+    <div class="ticker-band" aria-hidden="true">
+      <div class="ticker-track">
+        <div class="ticker-items">
+          <span>CURRENTLY LEARNING GAME DEVELOPMENT</span><span class="ticker-bullet"></span>
+          <span>BUILDING ATEEVIBES</span><span class="ticker-bullet"></span>
+          <span>HOSTING A HACKATHON SITE</span><span class="ticker-bullet"></span>
+          <span>CSE WITH AI AND ML</span><span class="ticker-bullet"></span>
+        </div>
+        <div class="ticker-items" aria-hidden="true">
+          <span>CURRENTLY LEARNING GAME DEVELOPMENT</span><span class="ticker-bullet"></span>
+          <span>BUILDING ATEEVIBES</span><span class="ticker-bullet"></span>
+          <span>HOSTING A HACKATHON SITE</span><span class="ticker-bullet"></span>
+          <span>CSE WITH AI AND ML</span><span class="ticker-bullet"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 01 / ABOUT (CHARACTER SHEET) -->
+    <section class="portfolio-section section-reveal bg-surface" id="about">
       <div class="container">
-        <h2 class="section-label">01 / ABOUT</h2>
-        <div class="about-layout">
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">01</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">01 / ABOUT</h2>
+          </div>
+        </div>
+
+        <div class="about-grid">
           <div class="about-bio">
             <p>Naman is a first-year Computer Science and Engineering student specialising in AI and ML at Newton School of Technology. He is starting out in game development, understands core game engine concepts and how basic games are structured, and is also interested in robotics. He has built an automated IoT plant-watering device and develops websites with AI-assisted workflows. His goal is to become the best game developer he can be.</p>
           </div>
@@ -1050,175 +1760,405 @@
       </div>
     </section>
 
-    <!-- 02 / PROJECTS (Quest Log) -->
-    <section class="portfolio-section section-reveal" id="projects">
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 02 / ROADMAP (SKILL TREE) -->
+    <section class="portfolio-section section-reveal bg-charcoal" id="roadmap">
       <div class="container">
-        <h2 class="section-label">02 / PROJECTS</h2>
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">02</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">02 / ROADMAP</h2>
+          </div>
+        </div>
+        <p class="section-lead">Skill tree progression path. Select any node to inspect details.</p>
+
+        <div class="hud-panel roadmap-tree-panel">
+          <span class="bracket bracket-tl" aria-hidden="true"></span>
+          <span class="bracket bracket-tr" aria-hidden="true"></span>
+          <span class="bracket bracket-bl" aria-hidden="true"></span>
+          <span class="bracket bracket-br" aria-hidden="true"></span>
+
+          <div class="roadmap-track">
+            <!-- Connecting hairline SVG -->
+            <svg class="roadmap-connectors-svg" aria-hidden="true" preserveAspectRatio="none">
+              <line x1="20" y1="1" x2="98%" y2="1" stroke="#2B3439" stroke-width="1.5"/>
+            </svg>
+
+            <!-- Node 1 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-unlocked is-selected" data-note="Mastery of algorithmic problem solving, core computer science structures, and systematic logic." aria-label="Programming foundations: Unlocked">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">Programming foundations</span>
+              <span class="roadmap-status-badge status-badge-unlocked">UNLOCKED</span>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-unlocked" data-note="Semantic HTML5, CSS responsive architecture, and vanilla JavaScript programming." aria-label="Web development basics: Unlocked">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">Web development basics</span>
+              <span class="roadmap-status-badge status-badge-unlocked">UNLOCKED</span>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-unlocked" data-note="Hardware telemetry, moisture sensing, and automatic plant-watering device construction." aria-label="IoT basics: Unlocked">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">IoT basics (plant-watering device)</span>
+              <span class="roadmap-status-badge status-badge-unlocked">UNLOCKED</span>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-unlocked" data-note="Five IBM SkillsBuild certifications covering NLP, ML algorithms, data analytics, and prompt engineering." aria-label="AI and ML fundamentals: Unlocked">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">AI and ML fundamentals</span>
+              <span class="roadmap-status-badge status-badge-unlocked">UNLOCKED</span>
+            </div>
+
+            <!-- Node 5 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-in-progress" data-note="Studying core game engine architectures, game math, collision detection, and rendering loops." aria-label="Game development fundamentals: In Progress (Now)">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">Game development fundamentals</span>
+              <span class="roadmap-status-badge status-badge-progress">NOW</span>
+            </div>
+
+            <!-- Node 6 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-next-goal" data-note="Design, code, and publish a complete original game with mechanics, audio, and progression." aria-label="Ship a first complete game: Next Goal">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">Ship a first complete game</span>
+              <span class="roadmap-status-badge status-badge-next">NEXT GOAL</span>
+            </div>
+
+            <!-- Node 7 -->
+            <div class="roadmap-node-wrap">
+              <button type="button" class="roadmap-node-btn node-next-goal" data-note="Construct a complex autonomous robotics prototype integrating hardware sensors and motor actuation." aria-label="Build a robotics project: Next Goal">
+                <span class="bracket bracket-tl"></span>
+              </button>
+              <span class="roadmap-node-label">Build a robotics project</span>
+              <span class="roadmap-status-badge status-badge-next">NEXT GOAL</span>
+            </div>
+          </div>
+
+          <!-- Note Panel -->
+          <div id="roadmapNote" class="roadmap-note-panel" role="region" aria-live="polite">
+            <span class="note-prefix">NODE DETAILS //</span>
+            <span id="roadmapNoteText">Mastery of algorithmic problem solving, core computer science structures, and systematic logic.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 03 / PROJECTS ("QUEST LOG") -->
+    <section class="portfolio-section section-reveal bg-surface" id="projects">
+      <div class="container">
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">03</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">03 / PROJECTS</h2>
+          </div>
+        </div>
         <p class="section-lead">Quest log of ongoing web builds, hardware devices, and game development milestones.</p>
 
-        <div class="ruled-list">
-          <!-- Project 1: Ateevibes -->
-          <article class="ruled-row ruled-row-project">
-            <div class="col-status">
-              <span class="status-tag status-in-progress">IN PROGRESS</span>
-            </div>
-            <div class="col-main">
-              <h3 class="row-title">Ateevibes E-commerce Website</h3>
-              <p class="row-desc">A complete e-commerce website built from scratch for a family clothing brand. Provides product catalog browsing, responsive views, and shopping features.</p>
-              <div class="row-tools">
-                <span class="row-tools-label">Tools:</span> Antigravity, OpenCode, Claude
+        <div class="quest-log-list">
+          <!-- Project 1: Ateevibes (Sprite Left) -->
+          <article class="hud-panel quest-item-panel">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="quest-item-grid">
+              <div class="quest-col-sprite">
+                <div class="quest-sprite-container">
+                  <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="0" width="2" height="1" fill="#E8E4D8"/><rect x="8" y="1" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="2" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="2" height="1" fill="#E8E4D8"/><rect x="4" y="4" width="8" height="1" fill="#E5A03A"/><rect x="3" y="5" width="1" height="1" fill="#E5A03A"/><rect x="4" y="5" width="2" height="1" fill="#8A6224"/><rect x="6" y="5" width="4" height="1" fill="#E8E4D8"/><rect x="10" y="5" width="1" height="1" fill="#8A6224"/><rect x="11" y="5" width="1" height="1" fill="#E5A03A"/><rect x="3" y="6" width="1" height="1" fill="#E5A03A"/><rect x="4" y="6" width="3" height="1" fill="#1C2226"/><rect x="7" y="6" width="2" height="1" fill="#E8E4D8"/><rect x="9" y="6" width="2" height="1" fill="#1C2226"/><rect x="11" y="6" width="1" height="1" fill="#E5A03A"/><rect x="3" y="7" width="4" height="1" fill="#1C2226"/><rect x="7" y="7" width="1" height="1" fill="#E5A03A"/><rect x="8" y="7" width="4" height="1" fill="#1C2226"/><rect x="2" y="8" width="5" height="1" fill="#1C2226"/><rect x="7" y="8" width="1" height="1" fill="#E5A03A"/><rect x="8" y="8" width="5" height="1" fill="#1C2226"/><rect x="2" y="9" width="11" height="1" fill="#1C2226"/><rect x="2" y="10" width="5" height="1" fill="#1C2226"/><rect x="7" y="10" width="1" height="1" fill="#E5A03A"/><rect x="8" y="10" width="5" height="1" fill="#1C2226"/><rect x="3" y="11" width="9" height="1" fill="#1C2226"/><rect x="3" y="12" width="5" height="1" fill="#1C2226"/><rect x="8" y="12" width="1" height="1" fill="#E5A03A"/><rect x="9" y="12" width="3" height="1" fill="#1C2226"/><rect x="3" y="13" width="9" height="1" fill="#1C2226"/><rect x="3" y="14" width="9" height="1" fill="#8A6224"/><rect x="3" y="15" width="9" height="1" fill="#2B3439"/></svg>
+                </div>
               </div>
-            </div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Live site for Ateevibes E-commerce Website (link placeholder)">Live site</a>
+              <div class="quest-col-content">
+                <div class="quest-meta-top">
+                  <span class="quest-index-num">QUEST // 01</span>
+                  <span class="status-tag status-in-progress">IN PROGRESS</span>
+                </div>
+                <h3 class="quest-title">Ateevibes E-commerce Website</h3>
+                <p class="quest-desc">A complete e-commerce website built from scratch for a family clothing brand. Provides product catalog browsing, responsive views, and shopping features.</p>
+                <div class="quest-tools-wrap">
+                  <span class="tool-tag">Antigravity</span>
+                  <span class="tool-tag">OpenCode</span>
+                  <span class="tool-tag">Claude</span>
+                </div>
+
+                <details class="quest-details-toggle">
+                  <summary>Details</summary>
+                  <div class="quest-details-content">
+                    <div class="quest-detail-line"><span class="quest-detail-label">Goal:</span> Build a complete production-ready e-commerce store for family clothing brand.</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Tools:</span> Antigravity, OpenCode, Claude</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Next step:</span> Finalize checkout workflows and responsive deployment.</div>
+                  </div>
+                </details>
+
+                <div class="quest-actions-row">
+                  <a href="#" class="hud-link" aria-label="Live site for Ateevibes E-commerce Website (placeholder)">Live site</a>
+                </div>
+              </div>
             </div>
           </article>
 
-          <!-- Project 2: Hackathon Frontend -->
-          <article class="ruled-row ruled-row-project">
-            <div class="col-status">
-              <span class="status-tag status-in-progress">IN PROGRESS</span>
-            </div>
-            <div class="col-main">
-              <h3 class="row-title">Hackathon Website Frontend</h3>
-              <p class="row-desc">The frontend of a hackathon website that Naman is hosting for his senior. Features event schedule timelines, registration pathways, and guidelines.</p>
-              <div class="row-tools">
-                <span class="row-tools-label">Tools:</span> Antigravity, Claude
+          <!-- Project 2: Hackathon Frontend (Sprite Right) -->
+          <article class="hud-panel quest-item-panel">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="quest-item-grid">
+              <div class="quest-col-content">
+                <div class="quest-meta-top">
+                  <span class="quest-index-num">QUEST // 02</span>
+                  <span class="status-tag status-in-progress">IN PROGRESS</span>
+                </div>
+                <h3 class="quest-title">Hackathon Website Frontend</h3>
+                <p class="quest-desc">The frontend of a hackathon website that Naman is hosting for his senior. Features event schedule timelines, registration pathways, and guidelines.</p>
+                <div class="quest-tools-wrap">
+                  <span class="tool-tag">Antigravity</span>
+                  <span class="tool-tag">Claude</span>
+                </div>
+
+                <details class="quest-details-toggle">
+                  <summary>Details</summary>
+                  <div class="quest-details-content">
+                    <div class="quest-detail-line"><span class="quest-detail-label">Goal:</span> Deploy frontend interface for senior hackathon host event.</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Tools:</span> Antigravity, Claude</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Next step:</span> Connect registration workflows and schedule timeline.</div>
+                  </div>
+                </details>
+
+                <div class="quest-actions-row">
+                  <a href="#" class="hud-link" aria-label="Repository for Hackathon Website Frontend (placeholder)">Repository</a>
+                </div>
               </div>
-            </div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Repository for Hackathon Website Frontend (link placeholder)">Repository</a>
+              <div class="quest-col-sprite">
+                <div class="quest-sprite-container">
+                  <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="0" width="10" height="1" fill="#E5A03A"/><rect x="2" y="1" width="1" height="1" fill="#8A6224"/><rect x="3" y="1" width="10" height="1" fill="#E5A03A"/><rect x="13" y="1" width="1" height="1" fill="#8A6224"/><rect x="1" y="2" width="1" height="1" fill="#8A6224"/><rect x="2" y="2" width="12" height="1" fill="#E5A03A"/><rect x="14" y="2" width="1" height="1" fill="#8A6224"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="1" height="1" fill="#2B3439"/><rect x="5" y="3" width="6" height="1" fill="#E5A03A"/><rect x="13" y="3" width="1" height="1" fill="#2B3439"/><rect x="14" y="3" width="1" height="1" fill="#8A6224"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="5" y="4" width="6" height="1" fill="#E8E4D8"/><rect x="14" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="5" width="1" height="1" fill="#2B3439"/><rect x="5" y="5" width="6" height="1" fill="#E5A03A"/><rect x="13" y="5" width="1" height="1" fill="#2B3439"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="5" y="6" width="6" height="1" fill="#E5A03A"/><rect x="12" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="8" height="1" fill="#E5A03A"/><rect x="5" y="8" width="6" height="1" fill="#E5A03A"/><rect x="6" y="9" width="1" height="1" fill="#8A6224"/><rect x="7" y="9" width="2" height="1" fill="#E5A03A"/><rect x="9" y="9" width="1" height="1" fill="#8A6224"/><rect x="6" y="10" width="1" height="1" fill="#8A6224"/><rect x="7" y="10" width="2" height="1" fill="#E5A03A"/><rect x="9" y="10" width="1" height="1" fill="#8A6224"/><rect x="5" y="11" width="6" height="1" fill="#8A6224"/><rect x="4" y="12" width="8" height="1" fill="#1C2226"/><rect x="4" y="13" width="4" height="1" fill="#1C2226"/><rect x="8" y="13" width="2" height="1" fill="#E8E4D8"/><rect x="10" y="13" width="2" height="1" fill="#1C2226"/><rect x="4" y="14" width="8" height="1" fill="#1C2226"/><rect x="3" y="15" width="10" height="1" fill="#2B3439"/></svg>
+                </div>
+              </div>
             </div>
           </article>
 
-          <!-- Project 3: Plant-Watering Device -->
-          <article class="ruled-row ruled-row-project">
-            <div class="col-status">
-              <span class="status-tag status-completed">COMPLETED</span>
-            </div>
-            <div class="col-main">
-              <h3 class="row-title">Automatic Plant-Watering Device</h3>
-              <p class="row-desc">A basic IoT device that waters a plant automatically. Monitors soil conditions with a dedicated moisture sensor and triggers irrigation.</p>
-              <div class="row-tools">
-                <span class="row-tools-label">Tools:</span> Soil Moisture Sensor, Microcontroller Board (Hardware details placeholder)
+          <!-- Project 3: Plant-Watering Device (Sprite Left) -->
+          <article class="hud-panel quest-item-panel">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="quest-item-grid">
+              <div class="quest-col-sprite">
+                <div class="quest-sprite-container">
+                  <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="0" width="1" height="1" fill="#E5A03A"/><rect x="6" y="1" width="3" height="1" fill="#E5A03A"/><rect x="6" y="2" width="3" height="1" fill="#E5A03A"/><rect x="7" y="3" width="1" height="1" fill="#8A6224"/><rect x="4" y="4" width="2" height="1" fill="#E8E4D8"/><rect x="9" y="4" width="2" height="1" fill="#E8E4D8"/><rect x="3" y="5" width="3" height="1" fill="#E8E4D8"/><rect x="6" y="5" width="1" height="1" fill="#8A6224"/><rect x="8" y="5" width="1" height="1" fill="#8A6224"/><rect x="9" y="5" width="3" height="1" fill="#E8E4D8"/><rect x="2" y="6" width="4" height="1" fill="#E8E4D8"/><rect x="7" y="6" width="1" height="1" fill="#8A6224"/><rect x="9" y="6" width="4" height="1" fill="#E8E4D8"/><rect x="4" y="7" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="7" width="1" height="1" fill="#8A6224"/><rect x="10" y="7" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="8" width="1" height="1" fill="#8A6224"/><rect x="4" y="9" width="8" height="1" fill="#E5A03A"/><rect x="4" y="10" width="8" height="1" fill="#8A6224"/><rect x="5" y="11" width="6" height="1" fill="#1C2226"/><rect x="5" y="12" width="6" height="1" fill="#1C2226"/><rect x="6" y="13" width="4" height="1" fill="#1C2226"/><rect x="6" y="14" width="4" height="1" fill="#1C2226"/><rect x="5" y="15" width="6" height="1" fill="#2B3439"/></svg>
+                </div>
               </div>
-            </div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Repository for Automatic Plant-Watering Device (link placeholder)">Repository</a>
+              <div class="quest-col-content">
+                <div class="quest-meta-top">
+                  <span class="quest-index-num">QUEST // 03</span>
+                  <span class="status-tag status-completed">COMPLETED</span>
+                </div>
+                <h3 class="quest-title">Automatic Plant-Watering Device</h3>
+                <p class="quest-desc">A basic IoT device that waters a plant automatically. Monitors soil conditions with a dedicated moisture sensor and triggers irrigation.</p>
+                <div class="quest-tools-wrap">
+                  <span class="tool-tag">Soil Moisture Sensor</span>
+                  <span class="tool-tag">Microcontroller Board (Hardware details placeholder)</span>
+                </div>
+
+                <details class="quest-details-toggle">
+                  <summary>Details</summary>
+                  <div class="quest-details-content">
+                    <div class="quest-detail-line"><span class="quest-detail-label">Goal:</span> Automate plant hydration based on real-time soil moisture telemetry.</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Tools:</span> Soil Moisture Sensor, Microcontroller Board</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Next step:</span> Completed and operational.</div>
+                  </div>
+                </details>
+
+                <div class="quest-actions-row">
+                  <a href="#" class="hud-link" aria-label="Repository for Automatic Plant-Watering Device (placeholder)">Repository</a>
+                </div>
+              </div>
             </div>
           </article>
 
-          <!-- Template 1: Project Slot 04 -->
-          <article class="ruled-row ruled-row-project template-row">
-            <div class="col-status">
-              <span class="status-tag status-planned">PLANNED</span>
-            </div>
-            <div class="col-main">
-              <h3 class="row-title">[Template] Project Slot 04</h3>
-              <p class="row-desc">Reserved for next game development prototype or mechanics demonstration. Duplicate this block to add a new project entry.</p>
-              <div class="row-tools">
-                <span class="row-tools-label">Tools:</span> Game Engine, C# / C++
+          <!-- Template 1: Project Slot 04 (Sprite Right) -->
+          <article class="hud-panel quest-item-panel template-item">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="quest-item-grid">
+              <div class="quest-col-content">
+                <div class="quest-meta-top">
+                  <span class="quest-index-num">QUEST // 04</span>
+                  <span class="status-tag status-planned">PLANNED</span>
+                </div>
+                <h3 class="quest-title">[Template] Project Slot 04</h3>
+                <p class="quest-desc">Reserved for next game development prototype or mechanics demonstration. Duplicate this block to add a new project entry.</p>
+                <div class="quest-tools-wrap">
+                  <span class="tool-tag">Game Engine</span>
+                  <span class="tool-tag">C# / C++</span>
+                </div>
+
+                <details class="quest-details-toggle">
+                  <summary>Details</summary>
+                  <div class="quest-details-content">
+                    <div class="quest-detail-line"><span class="quest-detail-label">Goal:</span> To be added</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Tools:</span> Game Engine, C# / C++</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Next step:</span> To be added</div>
+                  </div>
+                </details>
+
+                <div class="quest-actions-row">
+                  <a href="#" class="hud-link" aria-label="Template project repository placeholder">Repository</a>
+                </div>
               </div>
-            </div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Template project repository placeholder">Repository</a>
+              <div class="quest-col-sprite">
+                <div class="quest-sprite-container">
+                  <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="0" width="10" height="1" fill="#E5A03A"/><rect x="2" y="1" width="1" height="1" fill="#8A6224"/><rect x="3" y="1" width="10" height="1" fill="#E5A03A"/><rect x="13" y="1" width="1" height="1" fill="#8A6224"/><rect x="1" y="2" width="1" height="1" fill="#8A6224"/><rect x="2" y="2" width="12" height="1" fill="#E5A03A"/><rect x="14" y="2" width="1" height="1" fill="#8A6224"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="1" height="1" fill="#2B3439"/><rect x="5" y="3" width="6" height="1" fill="#E5A03A"/><rect x="13" y="3" width="1" height="1" fill="#2B3439"/><rect x="14" y="3" width="1" height="1" fill="#8A6224"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="5" y="4" width="6" height="1" fill="#E8E4D8"/><rect x="14" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="5" width="1" height="1" fill="#2B3439"/><rect x="5" y="5" width="6" height="1" fill="#E5A03A"/><rect x="13" y="5" width="1" height="1" fill="#2B3439"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="5" y="6" width="6" height="1" fill="#E5A03A"/><rect x="12" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="8" height="1" fill="#E5A03A"/><rect x="5" y="8" width="6" height="1" fill="#E5A03A"/><rect x="6" y="9" width="1" height="1" fill="#8A6224"/><rect x="7" y="9" width="2" height="1" fill="#E5A03A"/><rect x="9" y="9" width="1" height="1" fill="#8A6224"/><rect x="6" y="10" width="1" height="1" fill="#8A6224"/><rect x="7" y="10" width="2" height="1" fill="#E5A03A"/><rect x="9" y="10" width="1" height="1" fill="#8A6224"/><rect x="5" y="11" width="6" height="1" fill="#8A6224"/><rect x="4" y="12" width="8" height="1" fill="#1C2226"/><rect x="4" y="13" width="4" height="1" fill="#1C2226"/><rect x="8" y="13" width="2" height="1" fill="#E8E4D8"/><rect x="10" y="13" width="2" height="1" fill="#1C2226"/><rect x="4" y="14" width="8" height="1" fill="#1C2226"/><rect x="3" y="15" width="10" height="1" fill="#2B3439"/></svg>
+                </div>
+              </div>
             </div>
           </article>
 
-          <!-- Template 2: Project Slot 05 -->
-          <article class="ruled-row ruled-row-project template-row">
-            <div class="col-status">
-              <span class="status-tag status-planned">PLANNED</span>
-            </div>
-            <div class="col-main">
-              <h3 class="row-title">[Template] Project Slot 05</h3>
-              <p class="row-desc">Reserved for upcoming AI coursework or graphics simulation project. Duplicate this block to add a new project entry.</p>
-              <div class="row-tools">
-                <span class="row-tools-label">Tools:</span> Python, WebGL
+          <!-- Template 2: Project Slot 05 (Sprite Left) -->
+          <article class="hud-panel quest-item-panel template-item">
+            <span class="bracket bracket-tl" aria-hidden="true"></span>
+            <span class="bracket bracket-tr" aria-hidden="true"></span>
+            <span class="bracket bracket-bl" aria-hidden="true"></span>
+            <span class="bracket bracket-br" aria-hidden="true"></span>
+
+            <div class="quest-item-grid">
+              <div class="quest-col-sprite">
+                <div class="quest-sprite-container">
+                  <svg viewBox="0 0 16 16" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="7" y="0" width="1" height="1" fill="#E5A03A"/><rect x="6" y="1" width="3" height="1" fill="#E5A03A"/><rect x="6" y="2" width="3" height="1" fill="#E5A03A"/><rect x="7" y="3" width="1" height="1" fill="#8A6224"/><rect x="4" y="4" width="2" height="1" fill="#E8E4D8"/><rect x="9" y="4" width="2" height="1" fill="#E8E4D8"/><rect x="3" y="5" width="3" height="1" fill="#E8E4D8"/><rect x="6" y="5" width="1" height="1" fill="#8A6224"/><rect x="8" y="5" width="1" height="1" fill="#8A6224"/><rect x="9" y="5" width="3" height="1" fill="#E8E4D8"/><rect x="2" y="6" width="4" height="1" fill="#E8E4D8"/><rect x="7" y="6" width="1" height="1" fill="#8A6224"/><rect x="9" y="6" width="4" height="1" fill="#E8E4D8"/><rect x="4" y="7" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="7" width="1" height="1" fill="#8A6224"/><rect x="10" y="7" width="1" height="1" fill="#E8E4D8"/><rect x="7" y="8" width="1" height="1" fill="#8A6224"/><rect x="4" y="9" width="8" height="1" fill="#E5A03A"/><rect x="4" y="10" width="8" height="1" fill="#8A6224"/><rect x="5" y="11" width="6" height="1" fill="#1C2226"/><rect x="5" y="12" width="6" height="1" fill="#1C2226"/><rect x="6" y="13" width="4" height="1" fill="#1C2226"/><rect x="6" y="14" width="4" height="1" fill="#1C2226"/><rect x="5" y="15" width="6" height="1" fill="#2B3439"/></svg>
+                </div>
               </div>
-            </div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Template project repository placeholder">Repository</a>
+              <div class="quest-col-content">
+                <div class="quest-meta-top">
+                  <span class="quest-index-num">QUEST // 05</span>
+                  <span class="status-tag status-planned">PLANNED</span>
+                </div>
+                <h3 class="quest-title">[Template] Project Slot 05</h3>
+                <p class="quest-desc">Reserved for upcoming AI coursework or graphics simulation project. Duplicate this block to add a new project entry.</p>
+                <div class="quest-tools-wrap">
+                  <span class="tool-tag">Python</span>
+                  <span class="tool-tag">WebGL</span>
+                </div>
+
+                <details class="quest-details-toggle">
+                  <summary>Details</summary>
+                  <div class="quest-details-content">
+                    <div class="quest-detail-line"><span class="quest-detail-label">Goal:</span> To be added</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Tools:</span> Python, WebGL</div>
+                    <div class="quest-detail-line"><span class="quest-detail-label">Next step:</span> To be added</div>
+                  </div>
+                </details>
+
+                <div class="quest-actions-row">
+                  <a href="#" class="hud-link" aria-label="Template project repository placeholder">Repository</a>
+                </div>
+              </div>
             </div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 03 / ACHIEVEMENTS (Certificates) -->
-    <section class="portfolio-section section-reveal" id="achievements">
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 04 / ACHIEVEMENTS (CERTIFICATES) -->
+    <section class="portfolio-section section-reveal bg-charcoal" id="achievements">
       <div class="container">
-        <h2 class="section-label">03 / ACHIEVEMENTS</h2>
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">04</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">04 / ACHIEVEMENTS</h2>
+          </div>
+        </div>
         <p class="section-lead">The IBM SkillsBuild courses taught prompt engineering and AI fundamentals, which Naman applies in his web projects.</p>
 
-        <div class="ruled-list">
+        <div class="achievements-header-bar">
+          <span class="card-label">ACADEMIC CREDENTIALS</span>
+          <span class="unlocked-counter">5 of 5 unlocked</span>
+        </div>
+
+        <div class="cert-table">
           <!-- Cert 1 -->
-          <article class="ruled-row cert-row">
-            <div class="col-cert-title">
-              <h3 class="row-title">Artificial Intelligence Fundamentals</h3>
-            </div>
-            <div class="cert-issuer">IBM SkillsBuild</div>
-            <div class="cert-date">Jun 22, 2026</div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Verify Artificial Intelligence Fundamentals credential (link placeholder)">Verify</a>
-            </div>
+          <article class="cert-row">
+            <div class="cert-date-col">2026.06.22</div>
+            <div class="cert-medal-col"><svg viewBox="0 0 8 8" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="2" height="1" fill="#8A6224"/><rect x="6" y="0" width="2" height="1" fill="#E5A03A"/><rect x="2" y="1" width="2" height="1" fill="#8A6224"/><rect x="6" y="1" width="2" height="1" fill="#E5A03A"/><rect x="1" y="2" width="6" height="1" fill="#8A6224"/><rect x="7" y="2" width="1" height="1" fill="#E5A03A"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="1" height="1" fill="#E5A03A"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="4" width="1" height="1" fill="#E5A03A"/><rect x="2" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="5" width="4" height="1" fill="#E5A03A"/><rect x="7" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="6" width="2" height="1" fill="#E5A03A"/><rect x="6" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="2" height="1" fill="#8A6224"/></svg></div>
+            <div class="cert-title-col"><h3>Artificial Intelligence Fundamentals</h3></div>
+            <div class="cert-issuer-col">IBM SkillsBuild</div>
+            <div class="cert-action-col"><a href="#" class="hud-link" aria-label="Verify Artificial Intelligence Fundamentals credential (placeholder)">Verify</a></div>
           </article>
 
           <!-- Cert 2 -->
-          <article class="ruled-row cert-row">
-            <div class="col-cert-title">
-              <h3 class="row-title">Machine Learning Methods and Tools</h3>
-            </div>
-            <div class="cert-issuer">IBM SkillsBuild</div>
-            <div class="cert-date">Jun 22, 2026</div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Verify Machine Learning Methods and Tools credential (link placeholder)">Verify</a>
-            </div>
+          <article class="cert-row">
+            <div class="cert-date-col">2026.06.22</div>
+            <div class="cert-medal-col"><svg viewBox="0 0 8 8" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="2" height="1" fill="#8A6224"/><rect x="6" y="0" width="2" height="1" fill="#E5A03A"/><rect x="2" y="1" width="2" height="1" fill="#8A6224"/><rect x="6" y="1" width="2" height="1" fill="#E5A03A"/><rect x="1" y="2" width="6" height="1" fill="#8A6224"/><rect x="7" y="2" width="1" height="1" fill="#E5A03A"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="1" height="1" fill="#E5A03A"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="4" width="1" height="1" fill="#E5A03A"/><rect x="2" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="5" width="4" height="1" fill="#E5A03A"/><rect x="7" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="6" width="2" height="1" fill="#E5A03A"/><rect x="6" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="2" height="1" fill="#8A6224"/></svg></div>
+            <div class="cert-title-col"><h3>Machine Learning Methods and Tools</h3></div>
+            <div class="cert-issuer-col">IBM SkillsBuild</div>
+            <div class="cert-action-col"><a href="#" class="hud-link" aria-label="Verify Machine Learning Methods and Tools credential (placeholder)">Verify</a></div>
           </article>
 
           <!-- Cert 3 -->
-          <article class="ruled-row cert-row">
-            <div class="col-cert-title">
-              <h3 class="row-title">Data Analytics for Machine Learning</h3>
-            </div>
-            <div class="cert-issuer">IBM SkillsBuild</div>
-            <div class="cert-date">Jun 23, 2026</div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Verify Data Analytics for Machine Learning credential (link placeholder)">Verify</a>
-            </div>
+          <article class="cert-row">
+            <div class="cert-date-col">2026.06.23</div>
+            <div class="cert-medal-col"><svg viewBox="0 0 8 8" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="2" height="1" fill="#8A6224"/><rect x="6" y="0" width="2" height="1" fill="#E5A03A"/><rect x="2" y="1" width="2" height="1" fill="#8A6224"/><rect x="6" y="1" width="2" height="1" fill="#E5A03A"/><rect x="1" y="2" width="6" height="1" fill="#8A6224"/><rect x="7" y="2" width="1" height="1" fill="#E5A03A"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="1" height="1" fill="#E5A03A"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="4" width="1" height="1" fill="#E5A03A"/><rect x="2" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="5" width="4" height="1" fill="#E5A03A"/><rect x="7" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="6" width="2" height="1" fill="#E5A03A"/><rect x="6" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="2" height="1" fill="#8A6224"/></svg></div>
+            <div class="cert-title-col"><h3>Data Analytics for Machine Learning</h3></div>
+            <div class="cert-issuer-col">IBM SkillsBuild</div>
+            <div class="cert-action-col"><a href="#" class="hud-link" aria-label="Verify Data Analytics for Machine Learning credential (placeholder)">Verify</a></div>
           </article>
 
           <!-- Cert 4 -->
-          <article class="ruled-row cert-row">
-            <div class="col-cert-title">
-              <h3 class="row-title">Natural Language Processing</h3>
-            </div>
-            <div class="cert-issuer">IBM SkillsBuild</div>
-            <div class="cert-date">Jun 23, 2026</div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Verify Natural Language Processing credential (link placeholder)">Verify</a>
-            </div>
+          <article class="cert-row">
+            <div class="cert-date-col">2026.06.23</div>
+            <div class="cert-medal-col"><svg viewBox="0 0 8 8" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="2" height="1" fill="#8A6224"/><rect x="6" y="0" width="2" height="1" fill="#E5A03A"/><rect x="2" y="1" width="2" height="1" fill="#8A6224"/><rect x="6" y="1" width="2" height="1" fill="#E5A03A"/><rect x="1" y="2" width="6" height="1" fill="#8A6224"/><rect x="7" y="2" width="1" height="1" fill="#E5A03A"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="1" height="1" fill="#E5A03A"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="4" width="1" height="1" fill="#E5A03A"/><rect x="2" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="5" width="4" height="1" fill="#E5A03A"/><rect x="7" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="6" width="2" height="1" fill="#E5A03A"/><rect x="6" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="2" height="1" fill="#8A6224"/></svg></div>
+            <div class="cert-title-col"><h3>Natural Language Processing</h3></div>
+            <div class="cert-issuer-col">IBM SkillsBuild</div>
+            <div class="cert-action-col"><a href="#" class="hud-link" aria-label="Verify Natural Language Processing credential (placeholder)">Verify</a></div>
           </article>
 
           <!-- Cert 5 -->
-          <article class="ruled-row cert-row">
-            <div class="col-cert-title">
-              <h3 class="row-title">Supervised Learning Methods</h3>
-            </div>
-            <div class="cert-issuer">IBM SkillsBuild</div>
-            <div class="cert-date">Jun 24, 2026</div>
-            <div class="col-action">
-              <a href="#" class="hud-link" aria-label="Verify Supervised Learning Methods credential (link placeholder)">Verify</a>
-            </div>
+          <article class="cert-row">
+            <div class="cert-date-col">2026.06.24</div>
+            <div class="cert-medal-col"><svg viewBox="0 0 8 8" class="pixel-sprite" shape-rendering="crispEdges" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="0" width="2" height="1" fill="#8A6224"/><rect x="6" y="0" width="2" height="1" fill="#E5A03A"/><rect x="2" y="1" width="2" height="1" fill="#8A6224"/><rect x="6" y="1" width="2" height="1" fill="#E5A03A"/><rect x="1" y="2" width="6" height="1" fill="#8A6224"/><rect x="7" y="2" width="1" height="1" fill="#E5A03A"/><rect x="1" y="3" width="1" height="1" fill="#8A6224"/><rect x="2" y="3" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="3" width="1" height="1" fill="#E5A03A"/><rect x="1" y="4" width="1" height="1" fill="#8A6224"/><rect x="2" y="4" width="5" height="1" fill="#E8E4D8"/><rect x="7" y="4" width="1" height="1" fill="#E5A03A"/><rect x="2" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="5" width="4" height="1" fill="#E5A03A"/><rect x="7" y="5" width="1" height="1" fill="#8A6224"/><rect x="3" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="6" width="2" height="1" fill="#E5A03A"/><rect x="6" y="6" width="1" height="1" fill="#8A6224"/><rect x="4" y="7" width="2" height="1" fill="#8A6224"/></svg></div>
+            <div class="cert-title-col"><h3>Supervised Learning Methods</h3></div>
+            <div class="cert-issuer-col">IBM SkillsBuild</div>
+            <div class="cert-action-col"><a href="#" class="hud-link" aria-label="Verify Supervised Learning Methods credential (placeholder)">Verify</a></div>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 04 / LOADOUT (Tools) -->
-    <section class="portfolio-section section-reveal" id="loadout">
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 05 / LOADOUT (TOOLS) -->
+    <section class="portfolio-section section-reveal bg-surface" id="loadout">
       <div class="container">
-        <h2 class="section-label">04 / LOADOUT</h2>
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">05</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">05 / LOADOUT</h2>
+          </div>
+        </div>
         <p class="section-lead">Primary tools and foundational languages utilised across software builds and coursework.</p>
 
         <div class="hud-panel loadout-panel">
@@ -1244,24 +2184,31 @@
       </div>
     </section>
 
-    <!-- 05 / CONTACT -->
-    <section class="portfolio-section section-reveal" id="contact">
+    <div class="ruler-divider-wrap" aria-hidden="true"><svg class="ruler-divider" viewBox="0 0 1120 16" preserveAspectRatio="none"><defs><pattern id="ruler-tick-pat" width="32" height="16" patternUnits="userSpaceOnUse"><line x1="0" y1="3" x2="0" y2="13" stroke="#2B3439" stroke-width="1"/><line x1="16" y1="6" x2="16" y2="10" stroke="#2B3439" stroke-width="1"/></pattern></defs><rect x="0" y="0" width="100%" height="16" fill="url(#ruler-tick-pat)"/><line x1="0" y1="8" x2="100%" y2="8" stroke="#2B3439" stroke-width="1"/></svg></div>
+
+    <!-- 06 / CONTACT (INVERTED BONE BACKGROUND) -->
+    <section class="portfolio-section section-reveal contact-section-inverted" id="contact">
       <div class="container">
-        <div class="section-label">05 / CONTACT</div>
-        <h2 class="contact-heading">Contact</h2>
+        <div class="section-title-wrap">
+          <span class="section-num-outline" aria-hidden="true">06</span>
+          <div class="section-title-mask">
+            <h2 class="section-heading-text">06 / CONTACT</h2>
+          </div>
+        </div>
+        <h3 class="contact-heading">Contact <span class="single-amber-accent" aria-hidden="true"></span></h3>
         <p class="contact-lead">Recruiters and mentors are invited to reach out regarding internships, game development advice, or potential collaborations.</p>
 
         <ul class="contact-list">
           <li class="contact-item">
-            <span class="contact-label">Email</span>
+            <span class="contact-label">Email:</span>
             <a href="mailto:namanlunia229@gmail.com" class="contact-link">namanlunia229@gmail.com</a>
           </li>
           <li class="contact-item">
-            <span class="contact-label">GitHub</span>
+            <span class="contact-label">GitHub:</span>
             <a href="https://github.com/namanlunia" target="_blank" rel="noopener noreferrer" class="contact-link">https://github.com/namanlunia</a>
           </li>
           <li class="contact-item">
-            <span class="contact-label">LinkedIn</span>
+            <span class="contact-label">LinkedIn:</span>
             <a href="https://www.linkedin.com/in/naman-lunia-b06959415/" target="_blank" rel="noopener noreferrer" class="contact-link">https://www.linkedin.com/in/naman-lunia-b06959415/</a>
           </li>
         </ul>
@@ -1273,160 +2220,391 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <span class="footer-credit">Naman Lunia 2026</span>
+      <span class="footer-keys-hint">KEYS: [1] ABOUT  [2] ROADMAP  [3] PROJECTS  [4] ACHIEVEMENTS  [5] LOADOUT  [6] CONTACT</span>
     </div>
   </footer>
 
-  <!-- Vanilla JavaScript: UI Handlers and Mini-Game -->
+  <!-- Vanilla JavaScript -->
   <script>
     /* --------------------------------------------------
-       SECTION REVEAL & MOBILE NAVIGATION
+       HUD SCROLL TRACKER, SECTION REVEAL, KEYBOARD SHORTCUTS
        -------------------------------------------------- */
     document.addEventListener('DOMContentLoaded', () => {
-      // IntersectionObserver for one-time scroll reveal
-      const sections = document.querySelectorAll('.section-reveal');
+      const reveals = document.querySelectorAll('.section-reveal');
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       if (prefersReduced) {
-        sections.forEach(el => el.classList.add('revealed'));
+        reveals.forEach(el => el.classList.add('revealed'));
       } else if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('revealed');
-              obs.unobserve(entry.target);
+        const revealObs = new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('revealed');
+              obs.unobserve(e.target);
             }
           });
         }, { threshold: 0.1 });
-
-        sections.forEach(el => observer.observe(el));
+        reveals.forEach(el => revealObs.observe(el));
       } else {
-        sections.forEach(el => el.classList.add('revealed'));
+        reveals.forEach(el => el.classList.add('revealed'));
       }
 
-      // Mobile Menu Toggle
-      const menuToggle = document.getElementById('menuToggle');
-      const mainNav = document.getElementById('mainNav');
-      if (menuToggle && mainNav) {
-        menuToggle.addEventListener('click', () => {
-          const isOpen = mainNav.classList.toggle('nav-open');
-          menuToggle.setAttribute('aria-expanded', String(isOpen));
-          menuToggle.textContent = isOpen ? 'CLOSE' : 'MENU';
+      // Mobile Menu
+      const toggle = document.getElementById('menuToggle');
+      const nav = document.getElementById('mainNav');
+      if (toggle && nav) {
+        toggle.addEventListener('click', () => {
+          const open = nav.classList.toggle('nav-open');
+          toggle.setAttribute('aria-expanded', String(open));
+          toggle.textContent = open ? 'CLOSE' : 'MENU';
         });
-
-        mainNav.querySelectorAll('a').forEach(link => {
-          link.addEventListener('click', () => {
-            mainNav.classList.remove('nav-open');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            menuToggle.textContent = 'MENU';
+        nav.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            nav.classList.remove('nav-open');
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.textContent = 'MENU';
           });
         });
       }
+
+      // Roadmap interactive skill tree
+      const nodeBtns = document.querySelectorAll('.roadmap-node-btn');
+      const noteText = document.getElementById('roadmapNoteText');
+      nodeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          nodeBtns.forEach(b => b.classList.remove('is-selected'));
+          btn.classList.add('is-selected');
+          if (noteText) {
+            noteText.textContent = btn.getAttribute('data-note') || '';
+          }
+        });
+      });
+
+      // HUD scroll progress and section readout
+      const readoutSec = document.getElementById('hudSectionReadout');
+      const readoutPct = document.getElementById('hudScrollReadout');
+      const xpSegments = document.querySelectorAll('.hud-top-segment');
+
+      const sections = [
+        { id: 'hero', name: 'SEC // HERO' },
+        { id: 'about', name: 'SEC // 01 ABOUT' },
+        { id: 'roadmap', name: 'SEC // 02 ROADMAP' },
+        { id: 'projects', name: 'SEC // 03 PROJECTS' },
+        { id: 'achievements', name: 'SEC // 04 CERTS' },
+        { id: 'loadout', name: 'SEC // 05 LOADOUT' },
+        { id: 'contact', name: 'SEC // 06 CONTACT' }
+      ];
+
+      function updateHud() {
+        const scrollY = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = maxScroll > 0 ? Math.min(Math.max(scrollY / maxScroll, 0), 1) : 0;
+
+        if (readoutPct) {
+          readoutPct.textContent = 'SCROLL: ' + Math.round(pct * 100) + '%';
+        }
+
+        const activeSegments = Math.round(pct * 20);
+        xpSegments.forEach((seg, idx) => {
+          if (idx < activeSegments) seg.classList.add('active');
+          else seg.classList.remove('active');
+        });
+
+        // Determine active section
+        const scrollMid = scrollY + window.innerHeight * 0.35;
+        let currentName = 'SEC // HERO';
+        for (let i = 0; i < sections.length; i++) {
+          const el = document.getElementById(sections[i].id);
+          if (el && el.offsetTop <= scrollMid) {
+            currentName = sections[i].name;
+          }
+        }
+        if (readoutSec) readoutSec.textContent = currentName;
+      }
+
+      window.addEventListener('scroll', updateHud, { passive: true });
+      updateHud();
+
+      // Keyboard shortcuts 1 to 6
+      const keyMap = {
+        '1': 'about',
+        '2': 'roadmap',
+        '3': 'projects',
+        '4': 'achievements',
+        '5': 'loadout',
+        '6': 'contact'
+      };
+
+      window.addEventListener('keydown', (e) => {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
+        if (keyMap[e.key]) {
+          const targetEl = document.getElementById(keyMap[e.key]);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
     });
 
-    /* --------------------------------------------------
-       MINI-GAME (Under 150 lines)
+        /* --------------------------------------------------
+       MINI-GAME UPGRADE: 3-TIER PARALLAX RUNNER WITH DUCK
        -------------------------------------------------- */
     (() => {
-      const c = document.getElementById('gameCanvas');
-      if (!c) return;
-      const ctx = c.getContext('2d');
-      const xpEl = document.getElementById('gameXp');
-      const panel = document.getElementById('gameContainer');
-      const W = 800, H = 250, GY = 218, PS = 20, GRAV = 0.58, JUMP = -10.4;
-      let state = 'IDLE', xp = 0, p = { y: GY - PS, vy: 0, ground: true };
-      let obs = [], timer = 0, next = 70, paused = false, visible = true;
-      let last = 0, acc = 0, step = 1000 / 60;
+      const canvas = document.getElementById("gameCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const xpEl = document.getElementById("gameXp");
+      const hiEl = document.getElementById("gameHi");
+      const panel = document.getElementById("gameContainer");
+
+      const W = 800, H = 220, GROUND_Y = 190, STAND_H = 22, DUCK_H = 10, P_WIDTH = 18;
+      const GRAV = 0.58, JUMP_VEL = -10.5;
+
+      let state = "IDLE", xp = 0, hi = 0, speed = 4.2;
+      try {
+        const stored = localStorage.getItem("naman_hi_xp");
+        if (stored) hi = parseInt(stored, 10) || 0;
+      } catch (err) {}
+      if (hiEl) hiEl.textContent = String(hi);
+
+      let player = {
+        x: 60, y: GROUND_Y - STAND_H, vy: 0,
+        isGrounded: true, isDucking: false, runFrame: 0, frameTimer: 0
+      };
+
+      let obstacles = [], obsTimer = 0, nextSpawn = 80;
+      let farX = 0, midX = 0, groundTickX = 0;
+
+      const farSkyline = [
+        { x: 0, w: 90, h: 55 }, { x: 130, w: 70, h: 40 }, { x: 240, w: 110, h: 65 },
+        { x: 390, w: 80, h: 50 }, { x: 510, w: 100, h: 60 }, { x: 650, w: 80, h: 45 }, { x: 770, w: 90, h: 55 }
+      ];
+      const midSkyline = [
+        { x: 20, w: 45, h: 32 }, { x: 110, w: 55, h: 28 }, { x: 210, w: 40, h: 36 },
+        { x: 310, w: 60, h: 30 }, { x: 420, w: 50, h: 34 }, { x: 520, w: 45, h: 26 },
+        { x: 620, w: 65, h: 38 }, { x: 730, w: 50, h: 30 }
+      ];
+
+      let isPaused = false, isVisible = true, lastTime = 0, accumulator = 0;
+      const timestep = 1000 / 60;
 
       function resize() {
-        const d = window.devicePixelRatio || 1;
-        c.width = W * d; c.height = H * d;
-        ctx.setTransform(d, 0, 0, d, 0, 0);
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
       resize();
-      window.addEventListener('resize', resize);
+      window.addEventListener("resize", resize);
 
       function reset() {
-        xp = 0; if (xpEl) xpEl.textContent = '0';
-        p.y = GY - PS; p.vy = 0; p.ground = true;
-        obs = []; timer = 0; next = 70;
+        xp = 0; speed = 4.2;
+        if (xpEl) xpEl.textContent = "0";
+        player.y = GROUND_Y - STAND_H; player.vy = 0;
+        player.isGrounded = true; player.isDucking = false;
+        obstacles = []; obsTimer = 0; nextSpawn = 75;
       }
 
       function jump() {
-        if (state === 'IDLE' || state === 'GAMEOVER') {
-          reset(); state = 'RUNNING'; p.vy = JUMP; p.ground = false;
-        } else if (state === 'RUNNING' && p.ground) {
-          p.vy = JUMP; p.ground = false;
+        if (state === "IDLE" || state === "GAMEOVER") {
+          reset(); state = "RUNNING"; player.vy = JUMP_VEL; player.isGrounded = false;
+        } else if (state === "RUNNING" && player.isGrounded && !player.isDucking) {
+          player.vy = JUMP_VEL; player.isGrounded = false;
         }
       }
 
-      window.addEventListener('keydown', (e) => {
-        if (e.code === 'Space' || e.code === 'ArrowUp') {
-          const r = c.getBoundingClientRect();
-          if (document.activeElement === c || (r.top >= 0 && r.bottom <= window.innerHeight)) e.preventDefault();
+      function startDuck() {
+        if (state === "RUNNING" && player.isGrounded) player.isDucking = true;
+      }
+      function endDuck() { player.isDucking = false; }
+
+      window.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "ArrowUp") {
+          const rect = canvas.getBoundingClientRect();
+          if (document.activeElement === canvas || (rect.top >= 0 && rect.bottom <= window.innerHeight)) e.preventDefault();
           jump();
+        } else if (e.code === "ArrowDown") {
+          const rect = canvas.getBoundingClientRect();
+          if (document.activeElement === canvas || (rect.top >= 0 && rect.bottom <= window.innerHeight)) e.preventDefault();
+          startDuck();
         }
       });
-      c.addEventListener('click', () => { c.focus(); jump(); });
-      c.addEventListener('touchstart', (e) => { e.preventDefault(); c.focus(); jump(); }, { passive: false });
+      window.addEventListener("keyup", (e) => {
+        if (e.code === "ArrowDown") endDuck();
+      });
+
+      let touchHoldTimer = null, isTouching = false;
+      canvas.addEventListener("pointerdown", () => {
+        canvas.focus(); isTouching = true;
+        touchHoldTimer = setTimeout(() => { if (isTouching) startDuck(); }, 180);
+      });
+      canvas.addEventListener("pointerup", () => {
+        if (touchHoldTimer) clearTimeout(touchHoldTimer);
+        if (player.isDucking) endDuck();
+        else if (isTouching) jump();
+        isTouching = false;
+      });
+      canvas.addEventListener("pointercancel", () => {
+        if (touchHoldTimer) clearTimeout(touchHoldTimer);
+        endDuck(); isTouching = false;
+      });
+
+      function spawnObstacle() {
+        const type = (xp > 120 && Math.random() > 0.45) ? 1 : 0;
+        if (type === 0) {
+          const h = 22 + Math.floor(Math.random() * 20);
+          const w = 14 + Math.floor(Math.random() * 8);
+          obstacles.push({ type: 0, x: W + 10, y: GROUND_Y - h, w: w, h: h, scored: false });
+        } else {
+          obstacles.push({ type: 1, x: W + 10, y: GROUND_Y - 26, w: 32, h: 10, scored: false });
+        }
+      }
 
       function update() {
-        if (state !== 'RUNNING') return;
-        p.vy += GRAV; p.y += p.vy;
-        if (p.y >= GY - PS) { p.y = GY - PS; p.vy = 0; p.ground = true; }
-        if (++timer >= next) {
-          const h = 22 + Math.floor(Math.random() * 26);
-          obs.push({ x: W + 10, y: GY - h, w: 12 + Math.floor(Math.random() * 8), h: h, scored: false });
-          timer = 0; next = 70 + Math.floor(Math.random() * 60);
+        if (state !== "RUNNING") return;
+        speed = 4.2 + Math.min(xp / 1000, 3.2);
+
+        farX = (farX + speed * 0.25) % W;
+        midX = (midX + speed * 0.5) % W;
+        groundTickX = (groundTickX + speed) % 24;
+
+        const currentH = player.isDucking ? DUCK_H : STAND_H;
+        if (!player.isGrounded) {
+          player.vy += GRAV; player.y += player.vy;
+          if (player.y >= GROUND_Y - currentH) {
+            player.y = GROUND_Y - currentH; player.vy = 0; player.isGrounded = true;
+          }
+        } else {
+          player.y = GROUND_Y - currentH;
         }
-        const spd = 4.2 + Math.min(xp / 1200, 2.8);
-        for (let i = obs.length - 1; i >= 0; i--) {
-          const o = obs[i];
-          o.x -= spd;
-          if (!o.scored && o.x + o.w < 50) { o.scored = true; xp += 10; }
-          if (50 + 2 < o.x + o.w && 50 + PS - 2 > o.x && p.y + PS > o.y && p.y + 2 < GY) state = 'GAMEOVER';
-          if (o.x + o.w < -20) obs.splice(i, 1);
+
+        player.frameTimer++;
+        if (player.frameTimer >= 8) {
+          player.runFrame = (player.runFrame + 1) % 2;
+          player.frameTimer = 0;
         }
-        xp++; if (xpEl) xpEl.textContent = String(xp);
+
+        obsTimer++;
+        if (obsTimer >= nextSpawn) {
+          spawnObstacle(); obsTimer = 0;
+          nextSpawn = 65 + Math.floor(Math.random() * 55);
+        }
+
+        const pL = player.x + 2, pR = player.x + P_WIDTH - 2;
+        const pT = player.y + 2, pB = player.y + currentH;
+
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          const o = obstacles[i];
+          o.x -= speed;
+          if (!o.scored && o.x + o.w < player.x) {
+            o.scored = true; xp += 15;
+          }
+          if (pR > o.x && pL < o.x + o.w && pB > o.y && pT < o.y + o.h) {
+            state = "GAMEOVER";
+            if (xp > hi) {
+              hi = xp;
+              if (hiEl) hiEl.textContent = String(hi);
+              try { localStorage.setItem("naman_hi_xp", String(hi)); } catch (err) {}
+            }
+          }
+          if (o.x + o.w < -20) obstacles.splice(i, 1);
+        }
+        xp++;
+        if (xpEl) xpEl.textContent = String(xp);
       }
 
-      function render() {
-        ctx.fillStyle = '#161B1E'; ctx.fillRect(0, 0, W, H);
-        ctx.strokeStyle = '#2B3439'; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(0, GY + 0.5); ctx.lineTo(W, GY + 0.5); ctx.stroke();
-        ctx.fillStyle = '#E5A03A'; ctx.fillRect(50, p.y, PS, PS);
-        ctx.fillStyle = '#E8E4D8';
-        obs.forEach(o => ctx.fillRect(o.x, o.y, o.w, o.h));
-        ctx.textAlign = 'center';
-        if (state === 'IDLE') {
-          ctx.font = '600 16px "Chakra Petch", sans-serif'; ctx.fillStyle = '#E8E4D8';
-          ctx.fillText('PRESS SPACE OR TAP TO START', W / 2, H / 2 - 8);
-          ctx.font = '400 13px "IBM Plex Sans", sans-serif'; ctx.fillStyle = '#8E9993';
-          ctx.fillText('Jump over incoming obstacles to build XP', W / 2, H / 2 + 16);
-        } else if (state === 'GAMEOVER') {
-          ctx.font = '600 18px "Chakra Petch", sans-serif'; ctx.fillStyle = '#E8E4D8';
-          ctx.fillText('RUN COMPLETED', W / 2, H / 2 - 18);
-          ctx.font = '600 15px "Chakra Petch", sans-serif'; ctx.fillStyle = '#E5A03A';
-          ctx.fillText('FINAL XP: ' + xp, W / 2, H / 2 + 6);
-          ctx.font = '400 13px "IBM Plex Sans", sans-serif'; ctx.fillStyle = '#8E9993';
-          ctx.fillText('Press Space to retry', W / 2, H / 2 + 28);
+      function draw() {
+        ctx.fillStyle = "#161B1E";
+        ctx.fillRect(0, 0, W, H);
+
+        ctx.fillStyle = "#1C2226";
+        farSkyline.forEach(b => {
+          let x1 = b.x - farX;
+          if (x1 < -b.w) x1 += W + 50;
+          ctx.fillRect(x1, GROUND_Y - b.h, b.w, b.h);
+          ctx.fillRect(x1 + W + 50, GROUND_Y - b.h, b.w, b.h);
+        });
+
+        ctx.fillStyle = "#2B3439";
+        midSkyline.forEach(b => {
+          let x2 = b.x - midX;
+          if (x2 < -b.w) x2 += W + 50;
+          ctx.fillRect(x2, GROUND_Y - b.h, b.w, b.h);
+          ctx.fillRect(x2 + W + 50, GROUND_Y - b.h, b.w, b.h);
+        });
+
+        ctx.strokeStyle = "#2B3439";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, GROUND_Y + 0.5); ctx.lineTo(W, GROUND_Y + 0.5);
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let tx = -groundTickX; tx < W; tx += 24) {
+          ctx.moveTo(tx, GROUND_Y + 1); ctx.lineTo(tx, GROUND_Y + 7);
+        }
+        ctx.stroke();
+
+        ctx.fillStyle = "#E8E4D8";
+        obstacles.forEach(o => {
+          ctx.fillRect(o.x, o.y, o.w, o.h);
+          if (o.type === 1) {
+            ctx.fillStyle = "#E5A03A";
+            ctx.fillRect(o.x + 2, o.y + 2, o.w - 4, 2);
+            ctx.fillStyle = "#E8E4D8";
+          }
+        });
+
+        const py = player.y;
+        if (player.isDucking) {
+          ctx.fillStyle = "#E5A03A"; ctx.fillRect(player.x, py + 2, P_WIDTH + 4, 8);
+          ctx.fillStyle = "#8A6224"; ctx.fillRect(player.x + 8, py, 10, 4);
+          ctx.fillStyle = "#E8E4D8"; ctx.fillRect(player.x + 14, py + 1, 2, 2);
+        } else {
+          ctx.fillStyle = "#8A6224"; ctx.fillRect(player.x + 2, py, 12, 6);
+          ctx.fillStyle = "#E8E4D8"; ctx.fillRect(player.x + 10, py + 2, 2, 2);
+          ctx.fillStyle = "#E5A03A"; ctx.fillRect(player.x + 2, py + 6, 12, 10);
+          ctx.fillStyle = "#2B3439";
+          if (!player.isGrounded) {
+            ctx.fillRect(player.x + 3, py + 16, 4, 4); ctx.fillRect(player.x + 9, py + 16, 4, 4);
+          } else if (player.runFrame === 0) {
+            ctx.fillRect(player.x + 2, py + 16, 4, 6); ctx.fillRect(player.x + 10, py + 16, 4, 4);
+          } else {
+            ctx.fillRect(player.x + 3, py + 16, 4, 4); ctx.fillRect(player.x + 9, py + 16, 4, 6);
+          }
+        }
+
+        ctx.textAlign = "center";
+        if (state === "IDLE") {
+          ctx.font = '600 16px "Chakra Petch", sans-serif'; ctx.fillStyle = "#E8E4D8";
+          ctx.fillText("PRESS SPACE OR TAP TO START", W / 2, H / 2 - 10);
+          ctx.font = '400 12px "IBM Plex Sans", sans-serif'; ctx.fillStyle = "#8E9993";
+          ctx.fillText("Jump over ground obstacles / Duck under flying bars", W / 2, H / 2 + 14);
+        } else if (state === "GAMEOVER") {
+          ctx.font = '600 18px "Chakra Petch", sans-serif'; ctx.fillStyle = "#E8E4D8";
+          ctx.fillText("SIMULATION ENDED", W / 2, H / 2 - 20);
+          ctx.font = '600 15px "Chakra Petch", sans-serif'; ctx.fillStyle = "#E5A03A";
+          ctx.fillText("XP GAINED: " + xp + "  |  BEST HI: " + hi, W / 2, H / 2 + 4);
+          ctx.font = '400 12px "IBM Plex Sans", sans-serif'; ctx.fillStyle = "#8E9993";
+          ctx.fillText("Press Space or tap to retry", W / 2, H / 2 + 26);
         }
       }
 
-      function loop(t) {
-        if (!last) last = t;
-        acc += t - last; last = t;
-        if (!paused && visible) {
-          while (acc >= step) { update(); acc -= step; }
-          render();
+      function gameLoop(time) {
+        if (!lastTime) lastTime = time;
+        const delta = time - lastTime; lastTime = time;
+        if (!isPaused && isVisible) {
+          accumulator += delta;
+          while (accumulator >= timestep) { update(); accumulator -= timestep; }
+          draw();
         }
-        requestAnimationFrame(loop);
+        requestAnimationFrame(gameLoop);
       }
-      requestAnimationFrame(loop);
+      requestAnimationFrame(gameLoop);
 
-      if ('IntersectionObserver' in window && panel) {
-        new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.1 }).observe(panel);
+      if ("IntersectionObserver" in window && panel) {
+        new IntersectionObserver(([entry]) => { isVisible = entry.isIntersecting; }, { threshold: 0.1 }).observe(panel);
       }
-      document.addEventListener('visibilitychange', () => { paused = document.hidden; });
+      document.addEventListener("visibilitychange", () => { isPaused = document.hidden; });
     })();
   </script>
 </body>
