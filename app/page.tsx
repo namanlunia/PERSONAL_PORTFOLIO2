@@ -13,10 +13,10 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function HomePage() {
   useKeyboardShortcuts({
-    '1': 'about',
-    '2': 'roadmap',
-    '3': 'projects',
-    '4': 'achievements',
+    '1': 'hero',
+    '2': 'about',
+    '3': 'roadmap',
+    '4': 'projects',
     '5': 'contact',
   });
 

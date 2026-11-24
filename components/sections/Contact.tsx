@@ -1,68 +1,57 @@
 import React from 'react';
 import { contactData } from '@/content/links';
+import { SectionTitle } from '@/components/hud/SectionTitle';
 
 export function Contact() {
   return (
     <section
       id="contact"
       aria-label="05 / Contact"
-      className="my-16 md:my-24 px-6 md:px-12 py-12 md:py-16 max-w-[1120px] mx-auto w-full bg-[#E8E4D8] text-[#0F1214] border border-[#2B3439] relative"
+      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
     >
-      {/* 4 Corner brackets for inverted panel */}
-      <span
-        aria-hidden="true"
-        className="absolute -top-[1px] -left-[1px] w-2 h-2 border-t-2 border-l-2 border-[#0F1214] pointer-events-none"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute -top-[1px] -right-[1px] w-2 h-2 border-t-2 border-r-2 border-[#0F1214] pointer-events-none"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute -bottom-[1px] -left-[1px] w-2 h-2 border-b-2 border-l-2 border-[#0F1214] pointer-events-none"
-      />
-      <span
-        aria-hidden="true"
-        className="absolute -bottom-[1px] -right-[1px] w-2 h-2 border-b-2 border-r-2 border-[#0F1214] pointer-events-none"
-      />
+      {/* Section numeral 05 in amber matching Figma Image 6 */}
+      <SectionTitle number="05" />
 
-      {/* Header */}
-      <div className="flex items-baseline gap-4 md:gap-6 mb-6 select-none">
-        <span
-          aria-hidden="true"
-          className="font-heading text-[clamp(4rem,10vw,8rem)] font-semibold leading-[0.8] text-transparent shrink-0 [-webkit-text-stroke:1px_#0F1214]"
-        >
-          05
-        </span>
-        <div className="flex items-center gap-3">
-          {/* Single small amber square as the only accent */}
-          <span className="w-3 h-3 bg-accent inline-block shrink-0" aria-hidden="true" />
-          <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-semibold uppercase tracking-wider text-[#0F1214] leading-[1.05]">
-            Contact
+      {/* Two columns matching Figma Image 6 */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+        {/* Left Column: Heading & Context */}
+        <div className="lg:col-span-6 space-y-4">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.15] text-text">
+            {contactData.heading}
           </h2>
+          <p className="font-body text-base md:text-lg text-muted leading-relaxed">
+            {contactData.lead}
+          </p>
         </div>
-      </div>
 
-      <p className="font-body text-base md:text-lg text-[#0F1214] max-w-2xl mb-8 leading-relaxed">
-        {contactData.lead}
-      </p>
-
-      {/* Contact Links */}
-      <div className="border-t border-[#0F1214]/20 pt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-        {contactData.links.map((link) => (
-          <div key={link.type} className="flex flex-col">
-            <span className="font-heading text-xs font-semibold uppercase tracking-wider text-[#0F1214]/60 mb-1">
-              {link.type}:
-            </span>
-            <a
-              href={link.url}
-              className="font-heading text-sm md:text-base font-semibold text-[#0F1214] underline underline-offset-4 hover:text-[#0F1214] hover:bg-[#0F1214]/10 p-1 -ml-1 transition-none min-h-[44px] inline-flex items-center break-all focus-visible:outline-2 focus-visible:outline-accent"
-              {...(link.type === 'Email' ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+        {/* Right Column: Ruled list of contacts matching Figma Image 6 */}
+        <div className="lg:col-span-6 divide-y divide-line">
+          {contactData.links.map((link) => (
+            <div
+              key={link.type}
+              className="py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
             >
-              {link.label}
-            </a>
-          </div>
-        ))}
+              <div className="flex items-baseline gap-6">
+                <span className="font-heading text-xs font-semibold text-muted uppercase tracking-wider w-20 shrink-0">
+                  {link.type}
+                </span>
+                <span className="font-body text-sm sm:text-base text-text break-all">
+                  {link.label}
+                </span>
+              </div>
+
+              <div className="shrink-0 pl-26 sm:pl-0">
+                <a
+                  href={link.url}
+                  className="px-3 py-1.5 border border-line bg-surface text-text font-heading text-xs font-semibold uppercase tracking-wider hover:border-accent hover:text-accent transition-none inline-flex items-center min-h-[44px] focus-visible:outline-2 focus-visible:outline-accent"
+                  {...(link.type === 'Email' ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+                >
+                  {link.action}
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

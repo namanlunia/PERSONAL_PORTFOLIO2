@@ -19,7 +19,7 @@ The portfolio is built as a production-grade multi-file Next.js project with zer
 ---
 
 ## Directory Structure
-
+[text](blob:https%3A//claude.ai/6a9e8f87-6d94-4693-afa9-ab9ae8a52398)
 ```text
 ├── app/
 │   ├── layout.tsx             # Root layout: fonts, HUD frame, sticky nav, a11y skip-link

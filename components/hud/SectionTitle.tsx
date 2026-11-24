@@ -2,33 +2,23 @@ import React from 'react';
 
 interface SectionTitleProps {
   number: string;
-  title: string;
+  title?: string;
   className?: string;
-  numClassName?: string;
 }
 
 export function SectionTitle({
   number,
-  title,
   className = '',
-  numClassName = '',
 }: SectionTitleProps) {
   return (
-    <div className={`flex items-baseline gap-4 md:gap-6 mb-6 md:mb-8 select-none ${className}`}>
-      {/* Oversized outlined numeral */}
-      <span
-        aria-hidden="true"
-        className={`font-heading text-[clamp(4.5rem,12vw,9rem)] font-semibold leading-[0.8] text-transparent shrink-0 [-webkit-text-stroke:1px_var(--line)] ${numClassName}`}
-      >
+    <div className={`flex items-center gap-6 mb-8 md:mb-12 select-none ${className}`}>
+      {/* Section numeral in amber matching Figma frames */}
+      <span className="font-heading text-base md:text-lg font-semibold text-accent tracking-wider shrink-0">
         {number}
       </span>
 
-      {/* Masked section title sliding up on scroll reveal */}
-      <div className="overflow-hidden block">
-        <h2 className="section-title-revealer font-heading text-[clamp(2rem,5vw,4rem)] font-semibold uppercase tracking-wider text-text leading-[1.05]">
-          {title}
-        </h2>
-      </div>
+      {/* Hairline horizontal rule running across the section */}
+      <div className="h-[1px] bg-line w-full" aria-hidden="true" />
     </div>
   );
 }

@@ -3,95 +3,123 @@
 import React, { useState } from 'react';
 import { roadmapData, RoadmapNode } from '@/content/roadmap';
 import { SectionTitle } from '@/components/hud/SectionTitle';
-import { Panel } from '@/components/ui/Panel';
-import { Divider } from '@/components/ui/Divider';
 
 export function Roadmap() {
   const defaultSelected =
-    roadmapData.find((node) => node.statusType === 'progress') || roadmapData[0];
+    roadmapData.find((node) => node.statusType === 'progress') || roadmapData[4];
   const [selectedNode, setSelectedNode] = useState<RoadmapNode>(defaultSelected);
 
   return (
     <section
       id="roadmap"
-      aria-label="02 / Roadmap"
+      aria-label="03 / Roadmap"
       className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
     >
-      <SectionTitle number="02" title="Roadmap" />
+      {/* Section numeral in amber with hairline divider extending right */}
+      <SectionTitle number="03" />
 
-      <p className="font-body text-base text-muted max-w-2xl mb-8 leading-relaxed">
-        Progression skill tree mapping foundational competencies, active targets, and long-term milestones. Select a node to inspect telemetry.
-      </p>
+      {/* Main Track & Detail Panel matching Figma Image 3 */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left / Center: Connected Horizontal Track */}
+        <div className="lg:col-span-8 flex flex-col md:flex-row items-stretch md:items-center gap-4 py-4 overflow-x-auto">
+          {roadmapData.slice(4, 7).map((node, index, arr) => {
+            const isSelected = selectedNode.id === node.id;
+            const statusLabel =
+              node.statusType === 'progress'
+                ? 'NOW'
+                : node.statusType === 'next'
+                ? index === 1
+                  ? 'NEXT'
+                  : 'LATER'
+                : 'UNLOCKED';
 
-      {/* Skill Tree Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-        {roadmapData.map((node, index) => {
-          const isSelected = selectedNode.id === node.id;
-          const isProgress = node.statusType === 'progress';
-          const isUnlocked = node.statusType === 'unlocked';
+            return (
+              <React.Fragment key={node.id}>
+                {/* Node Box */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedNode(node)}
+                  className={`text-left p-5 border rounded-none min-w-[200px] flex-1 cursor-pointer transition-none focus-visible:outline-2 focus-visible:outline-accent ${
+                    isSelected
+                      ? 'border-line bg-surface/60'
+                      : 'border-line/60 bg-surface/20 hover:border-line'
+                  }`}
+                >
+                  {/* Square icon */}
+                  <div className="mb-6">
+                    {isSelected ? (
+                      <span className="w-3.5 h-3.5 bg-accent inline-block" aria-hidden="true" />
+                    ) : (
+                      <span className="w-3.5 h-3.5 border border-line inline-block" aria-hidden="true" />
+                    )}
+                  </div>
 
-          return (
+                  {/* Status label in amber */}
+                  <div className="font-heading text-xs font-semibold text-accent uppercase tracking-wider mb-2">
+                    {statusLabel}
+                  </div>
+
+                  {/* Title */}
+                  <div className="font-heading text-base font-semibold text-text uppercase tracking-wide">
+                    {node.label}
+                  </div>
+                </button>
+
+                {/* Connecting hairline divider between nodes */}
+                {index < arr.length - 1 && (
+                  <div className="hidden md:block w-8 h-[1px] bg-line shrink-0" aria-hidden="true" />
+                )}
+              </React.Fragment>
+            );
+          })}
+        </div>
+
+        {/* Right: Selected Node Detail Card matching Figma Image 3 */}
+        <div className="lg:col-span-4">
+          <div className="border border-line bg-surface/40 p-6 md:p-8">
+            <div className="self-start mb-6">
+              <span className="px-2.5 py-1 border border-line bg-surface font-heading text-[11px] font-semibold text-accent uppercase tracking-wider">
+                {selectedNode.status}
+              </span>
+            </div>
+
+            <h3 className="font-heading text-xl md:text-2xl font-semibold text-text uppercase tracking-wide mb-4">
+              {selectedNode.label}
+            </h3>
+
+            <p className="font-body text-sm md:text-base text-muted leading-relaxed">
+              {selectedNode.note}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Full Skill Tree History toggle */}
+      <details className="mt-8 border-t border-line/60 pt-4">
+        <summary className="font-heading text-xs font-semibold uppercase tracking-wider text-muted hover:text-accent cursor-pointer select-none py-1 focus-visible:outline-2 focus-visible:outline-accent list-none inline-flex items-center gap-2">
+          <span className="text-accent" aria-hidden="true">[+]</span>
+          <span>VIEW FULL SKILL TREE ARCHIVE ({roadmapData.length} NODES)</span>
+        </summary>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+          {roadmapData.map((node) => (
             <button
               key={node.id}
               type="button"
               onClick={() => setSelectedNode(node)}
-              className={`text-left p-4 border rounded-none min-h-[96px] flex flex-col justify-between cursor-pointer transition-none focus-visible:outline-2 focus-visible:outline-accent ${
-                isSelected
-                  ? 'border-accent bg-surface-2'
-                  : isProgress
-                  ? 'border-accent bg-surface'
-                  : 'border-line bg-surface hover:border-muted'
+              className={`text-left p-3 border rounded-none text-xs font-heading cursor-pointer transition-none ${
+                selectedNode.id === node.id
+                  ? 'border-accent bg-surface-2 text-text'
+                  : 'border-line bg-surface text-muted hover:text-text'
               }`}
             >
-              <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="font-heading text-xs text-muted uppercase font-semibold">
-                  0{index + 1} {'//'}
-                </span>
-                <span
-                  className={`font-heading text-[11px] font-semibold tracking-wider uppercase px-2 py-0.5 border rounded-none ${
-                    isProgress
-                      ? 'border-accent text-accent bg-bg'
-                      : isUnlocked
-                      ? 'border-muted text-text bg-bg'
-                      : 'border-line text-muted bg-bg'
-                  }`}
-                >
-                  {node.status}
-                </span>
+              <div className="text-[10px] text-accent mb-1 uppercase font-semibold">
+                {node.status}
               </div>
-
-              <div
-                className={`font-heading text-sm font-semibold tracking-wide uppercase leading-tight ${
-                  isSelected ? 'text-accent' : 'text-text'
-                }`}
-              >
-                {node.label}
-              </div>
+              <div className="font-semibold uppercase">{node.label}</div>
             </button>
-          );
-        })}
-      </div>
-
-      {/* Selected Node Details Box */}
-      <Panel variant="surface" className="mb-12">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-line pb-3 mb-4">
-          <div className="flex items-center gap-3">
-            <span className="w-2 h-2 bg-accent inline-block" aria-hidden="true" />
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-text">
-              NODE INSPECTOR: {selectedNode.label}
-            </h3>
-          </div>
-          <span className="font-heading text-xs font-semibold uppercase tracking-wider text-accent">
-            STATUS: {selectedNode.status}
-          </span>
+          ))}
         </div>
-
-        <p className="font-body text-base text-text leading-relaxed">
-          {selectedNode.note}
-        </p>
-      </Panel>
-
-      <Divider />
+      </details>
     </section>
   );
 }
