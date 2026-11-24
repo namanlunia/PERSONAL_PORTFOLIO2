@@ -10,7 +10,7 @@ export function useActiveSection(sectionIds: string[]): string {
       const scrollY = window.scrollY;
       const triggerPoint = scrollY + window.innerHeight * 0.35;
 
-      let current = sectionIds[0] || 'hero';
+      let current = 'hero';
       for (const id of sectionIds) {
         const el = document.getElementById(id);
         if (el && el.offsetTop <= triggerPoint) {

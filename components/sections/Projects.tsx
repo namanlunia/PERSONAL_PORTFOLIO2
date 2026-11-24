@@ -22,11 +22,11 @@ export function Projects() {
   return (
     <section
       id="projects"
-      aria-label="04 / Projects"
-      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
+      aria-label="03 / Projects"
+      className="py-[clamp(64px,8vw,112px)] px-[clamp(32px,6vw,96px)] max-w-[1120px] mx-auto w-full"
     >
       {/* Section numeral in amber with hairline divider extending right */}
-      <SectionTitle number="04" />
+      <SectionTitle number="03" />
 
       {/* Full-width ruled rows matching Figma Image 4 */}
       <div className="divide-y divide-line">
@@ -37,7 +37,6 @@ export function Projects() {
           >
             {/* Left side: Square box with pixel sprite + Title block */}
             <div className="flex items-start gap-6">
-              {/* Square container for pixel sprite matching Figma Image 4 */}
               <div
                 className="w-24 h-24 sm:w-28 sm:h-28 border border-line bg-surface flex items-center justify-center shrink-0 p-3"
                 aria-hidden="true"
@@ -45,7 +44,6 @@ export function Projects() {
                 {renderSprite(project.spriteType)}
               </div>
 
-              {/* Text metadata */}
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
                   <span className="font-heading text-xs font-semibold text-muted uppercase tracking-wider">
@@ -97,7 +95,7 @@ export function Projects() {
               </div>
             </div>
 
-            {/* Right side: DETAILS label & OPEN PROJECT button matching Figma Image 4 */}
+            {/* Right side: DETAILS label & OPEN PROJECT button */}
             <div className="flex flex-col items-start md:items-end gap-2 shrink-0 pl-32 md:pl-0">
               <span className="font-heading text-xs font-semibold tracking-wider text-muted uppercase">
                 DETAILS

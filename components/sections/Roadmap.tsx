@@ -12,11 +12,11 @@ export function Roadmap() {
   return (
     <section
       id="roadmap"
-      aria-label="03 / Roadmap"
-      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
+      aria-label="02 / Roadmap"
+      className="py-[clamp(64px,8vw,112px)] px-[clamp(32px,6vw,96px)] max-w-[1120px] mx-auto w-full"
     >
       {/* Section numeral in amber with hairline divider extending right */}
-      <SectionTitle number="03" />
+      <SectionTitle number="02" />
 
       {/* Main Track & Detail Panel matching Figma Image 3 */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

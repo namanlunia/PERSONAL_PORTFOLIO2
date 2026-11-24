@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navItems } from '@/content/links';
 import { useActiveSection } from '@/hooks/useActiveSection';
-import { XpBar } from './XpBar';
 
 export function StickyNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,63 +62,66 @@ export function StickyNav() {
   };
 
   return (
-    <header className="sticky top-0 z-[100] bg-bg/95 backdrop-blur-none border-b border-line">
-      {/* Main Nav Bar */}
-      <div className="max-w-[1120px] mx-auto px-4 md:px-6 h-14 flex items-center justify-between">
-        {/* Left: Logo matching Figma P/01 */}
-        <Link
-          href="/"
-          className="font-heading font-bold text-lg tracking-wider text-text hover:text-accent no-underline focus-visible:outline-2 focus-visible:outline-accent"
-        >
-          P/01
-        </Link>
-
-        {/* Center: Desktop Nav Items matching Figma (01 Home, 02 About, 03 Roadmap, 04 Projects, 05 Contact) */}
-        <nav className="hidden md:flex items-center" aria-label="Main Navigation">
-          <ul className="flex items-center gap-8 list-none m-0 p-0">
-            {navItems.map((item) => {
-              const isActive = isHome && activeSection === item.id;
-              const href = isHome ? item.href : `/${item.href}`;
-
-              return (
-                <li key={item.id}>
-                  <a
-                    href={href}
-                    className={`font-heading text-xs font-semibold tracking-wider uppercase no-underline transition-none focus-visible:outline-2 focus-visible:outline-accent pb-1 ${
-                      isActive
-                        ? 'text-text border-b-2 border-accent'
-                        : 'text-muted hover:text-text'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
-
-        {/* Right: MENU button in 1px border box matching Figma */}
-        <div>
-          <button
-            ref={toggleBtnRef}
-            type="button"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen}
-            aria-controls="mobile-nav-drawer"
-            className="px-3 py-1.5 border border-line bg-surface text-text font-heading text-xs font-semibold uppercase tracking-wider hover:border-accent hover:text-accent cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+    <>
+      <header
+        className="fixed z-[50] bg-bg border-b border-line flex items-center"
+        style={{
+          top: 'var(--frame-gap)',
+          left: 'var(--frame-gap)',
+          right: 'var(--frame-gap)',
+          height: '72px',
+        }}
+      >
+        <div className="w-full h-full flex items-center justify-between px-4 sm:px-8 md:px-[56px]">
+          {/* Left: Wordmark NL scrolls to top */}
+          <a
+            href="#hero"
+            className="font-heading font-bold text-xl tracking-wider text-text hover:text-accent no-underline focus-visible:outline-2 focus-visible:outline-accent"
+            aria-label="Scroll to top"
           >
-            MENU
-          </button>
-        </div>
-      </div>
+            NL
+          </a>
 
-      {/* Sub-header rule with XP Progress bar (Matches Figma) */}
-      <div className="border-t border-line/60 bg-bg">
-        <div className="max-w-[1120px] mx-auto px-4 md:px-6 py-1.5 flex items-center justify-between">
-          <XpBar />
+          {/* Desktop Nav: 01 About, 02 Roadmap, 03 Projects, 04 Achievements, 05 Contact */}
+          <nav className="hidden md:flex items-center" aria-label="Main Navigation">
+            <ul className="flex items-center gap-4 lg:gap-8 list-none m-0 p-0">
+              {navItems.map((item) => {
+                const isActive = isHome && activeSection === item.id;
+                const href = isHome ? item.href : `/${item.href}`;
+
+                return (
+                  <li key={item.id}>
+                    <a
+                      href={href}
+                      className={`font-heading text-[11px] lg:text-xs font-semibold tracking-wider uppercase no-underline transition-none focus-visible:outline-2 focus-visible:outline-accent pb-1 whitespace-nowrap ${
+                        isActive
+                          ? 'text-text border-b-2 border-accent'
+                          : 'text-muted hover:text-text'
+                      }`}
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          {/* Mobile MENU button (appears below 768px only) */}
+          <div className="md:hidden">
+            <button
+              ref={toggleBtnRef}
+              type="button"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-expanded={isOpen}
+              aria-controls="mobile-nav-drawer"
+              className="px-3 py-1.5 border border-line bg-surface text-text font-heading text-xs font-semibold uppercase tracking-wider hover:border-accent hover:text-accent cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+            >
+              MENU
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
       {/* Mobile Drawer Overlay */}
       {isOpen && (
@@ -130,7 +131,8 @@ export function StickyNav() {
           role="dialog"
           aria-modal="true"
           aria-label="Navigation Menu"
-          className="fixed inset-0 top-14 bg-bg z-[200] flex flex-col justify-between p-6 overflow-y-auto"
+          className="fixed inset-0 bg-bg z-[60] flex flex-col justify-between p-6 overflow-y-auto"
+          style={{ top: 'calc(var(--frame-gap) + 72px)' }}
         >
           <div className="flex justify-between items-center pb-4 border-b border-line">
             <span className="font-heading text-xs font-semibold tracking-wider text-muted uppercase">
@@ -139,7 +141,7 @@ export function StickyNav() {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="font-heading text-xs font-semibold uppercase tracking-wider text-muted hover:text-text px-2 py-1 border border-line"
+              className="font-heading text-xs font-semibold uppercase tracking-wider text-muted hover:text-text px-2 py-1 border border-line cursor-pointer"
             >
               [CLOSE]
             </button>
@@ -175,6 +177,6 @@ export function StickyNav() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

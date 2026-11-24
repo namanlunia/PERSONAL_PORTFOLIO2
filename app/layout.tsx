@@ -68,14 +68,18 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        {/* Fixed HUD Outer Frame, XP Bar, Corner Readouts */}
+        {/* Mat Frame Layer with 20px amber brackets & mat strip readouts */}
         <HudFrame />
 
-        {/* Sticky Header Nav with Active Indicator & Mobile Drawer */}
+        {/* Fixed Header Nav with Wordmark NL, Nav Links, & Mobile Drawer */}
         <StickyNav />
 
-        {/* Main Content Area */}
-        <main id="main-content" tabIndex={-1} className="focus:outline-none">
+        {/* Main Content Area: offset to start right below the fixed 72px header */}
+        <main
+          id="main-content"
+          tabIndex={-1}
+          className="focus:outline-none pt-[calc(var(--frame-gap)+72px)] pb-[var(--frame-gap)]"
+        >
           {children}
         </main>
       </body>

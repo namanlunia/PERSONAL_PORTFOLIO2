@@ -11,13 +11,26 @@
   --muted: #8E9993;
   --accent: #E5A03A;
   --amber-dim: #8A6224;
+  --frame-gap: 32px;
+}
+
+@media (max-width: 1279px) {
+  :root {
+    --frame-gap: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --frame-gap: 10px;
+  }
 }
 
 html {
   background-color: var(--bg);
   color: var(--text);
   scroll-behavior: smooth;
-  scroll-padding-top: 4rem;
+  scroll-padding-top: calc(var(--frame-gap) + 72px + 16px);
 }
 
 body {
@@ -28,6 +41,7 @@ body {
   font-family: var(--font-ibm-plex), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 /* Strict: No hover transitions or animations anywhere */

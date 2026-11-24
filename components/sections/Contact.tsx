@@ -7,7 +7,7 @@ export function Contact() {
     <section
       id="contact"
       aria-label="05 / Contact"
-      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
+      className="py-[clamp(64px,8vw,112px)] px-[clamp(32px,6vw,96px)] max-w-[1120px] mx-auto w-full"
     >
       {/* Section numeral 05 in amber matching Figma Image 6 */}
       <SectionTitle number="05" />

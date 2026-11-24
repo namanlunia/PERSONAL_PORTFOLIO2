@@ -9,6 +9,7 @@ export interface ProfileData {
     guild: string;
     goal: string;
     status: string;
+    level: string;
   };
   about: {
     bioParagraph: string;
@@ -32,6 +33,7 @@ export const profileData: ProfileData = {
     guild: 'Newton School of Technology',
     goal: 'Game Developer',
     status: 'Online',
+    level: '1st Year',
   },
   about: {
     bioParagraph:

@@ -6,10 +6,10 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { id: 'hero', number: '01', label: '01 Home', href: '#hero' },
-  { id: 'about', number: '02', label: '02 About', href: '#about' },
-  { id: 'roadmap', number: '03', label: '03 Roadmap', href: '#roadmap' },
-  { id: 'projects', number: '04', label: '04 Projects', href: '#projects' },
+  { id: 'about', number: '01', label: '01 About', href: '#about' },
+  { id: 'roadmap', number: '02', label: '02 Roadmap', href: '#roadmap' },
+  { id: 'projects', number: '03', label: '03 Projects', href: '#projects' },
+  { id: 'achievements', number: '04', label: '04 Achievements', href: '#achievements' },
   { id: 'contact', number: '05', label: '05 Contact', href: '#contact' },
 ];
 

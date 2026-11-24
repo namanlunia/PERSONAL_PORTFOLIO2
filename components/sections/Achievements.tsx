@@ -7,11 +7,11 @@ export function Achievements() {
   return (
     <section
       id="achievements"
-      aria-label="04.5 / Achievements"
-      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
+      aria-label="04 / Achievements"
+      className="py-[clamp(64px,8vw,112px)] px-[clamp(32px,6vw,96px)] max-w-[1120px] mx-auto w-full"
     >
-      {/* Section numeral 04.5 in amber matching Figma Image 5 */}
-      <SectionTitle number="04.5" />
+      {/* Section numeral 04 in amber matching nav order */}
+      <SectionTitle number="04" />
 
       {/* Ruled rows matching Figma Image 5 */}
       <div className="divide-y divide-line">
@@ -30,7 +30,7 @@ export function Achievements() {
               </h3>
             </div>
 
-            {/* Middle & Right: Issuer & Date/Verify link */}
+            {/* Middle & Right: Issuer & Verify link */}
             <div className="flex items-center justify-between sm:justify-end gap-8 pl-10 sm:pl-0 font-heading text-xs uppercase tracking-wider">
               <span className="text-muted">{cert.issuer}</span>
               <a
@@ -38,7 +38,7 @@ export function Achievements() {
                 className="text-muted hover:text-accent underline transition-none min-h-[44px] inline-flex items-center focus-visible:outline-2 focus-visible:outline-accent"
                 aria-label={`Verify credential for ${cert.title}`}
               >
-                {cert.isPlaceholder ? 'TBA' : cert.date}
+                {cert.isPlaceholder ? 'VERIFY' : cert.date}
               </a>
             </div>
           </div>

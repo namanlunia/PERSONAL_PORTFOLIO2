@@ -6,15 +6,15 @@ export function About() {
   return (
     <section
       id="about"
-      aria-label="02 / About"
-      className="py-16 md:py-24 px-4 md:px-6 max-w-[1120px] mx-auto w-full"
+      aria-label="01 / About"
+      className="py-[clamp(64px,8vw,112px)] px-[clamp(32px,6vw,96px)] max-w-[1120px] mx-auto w-full"
     >
       {/* Section numeral in amber with hairline divider extending right */}
-      <SectionTitle number="02" />
+      <SectionTitle number="01" />
 
       {/* Two columns matching Figma Image 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-        {/* Left Column: Huge Heading Statement */}
+        {/* Left Column: Heading Statement */}
         <div className="lg:col-span-6">
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-normal leading-[1.15] text-text">
             A systems-minded maker working between design decisions and production code.
@@ -27,19 +27,22 @@ export function About() {
             {profileData.about.bioParagraph}
           </p>
 
-          {/* Tags matching Figma Image 2 */}
+          {/* Tags */}
           <div className="flex flex-wrap gap-2.5 pt-2">
             <span className="px-3 py-1.5 border border-line bg-surface font-heading text-xs font-semibold uppercase tracking-wider text-text">
-              PRODUCT THINKING
+              GAME ENGINES
             </span>
             <span className="px-3 py-1.5 border border-line bg-surface font-heading text-xs font-semibold uppercase tracking-wider text-text">
-              INTERFACE DESIGN
+              ROBOTICS & IOT
             </span>
             <span className="px-3 py-1.5 border border-line bg-surface font-heading text-xs font-semibold uppercase tracking-wider text-text">
-              FRONTEND CRAFT
+              AI & ML
             </span>
             <span className="px-3 py-1.5 border border-line bg-surface font-heading text-xs font-semibold uppercase tracking-wider text-text">
-              ACCESSIBILITY
+              PROMPT ENGINEERING
+            </span>
+            <span className="px-3 py-1.5 border border-line bg-surface font-heading text-xs font-semibold uppercase tracking-wider text-text">
+              WEB DEV
             </span>
             {profileData.loadout.map((tool) => (
               <span
