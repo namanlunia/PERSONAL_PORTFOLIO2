@@ -36,14 +36,14 @@ A high-performance, single-page application built with Next.js 15 App Router and
 ---
 
 ## 3. Tech Stack
-- **Framework**: Next.js 15+ (App Router, Static HTML Export `output: 'export'`)
+- **Framework**: Next.js 15+ (App Router, Static HTML prerendering)
 - **Language**: TypeScript (strict mode enabled)
 - **Styling**: Tailwind CSS (custom theme tokens, 0 to 2px sharp corners, zero drop shadows)
 - **Typography**: Fontsource (`@fontsource/chakra-petch` and `@fontsource/ibm-plex-sans`) loading Chakra Petch (500, 600) and IBM Plex Sans (400, 500)
 - **Graphics**: Handcrafted inline SVG pixel art sprites with crisp edges
 - **Interactivity**: Pure React state, custom hooks, and HTML5 Canvas mini-game with 3-tier parallax
 - **Testing & Tooling**: ESLint 9, strict TypeScript type checking (`tsc --noEmit`), automated link verification, and forbidden-string audits
-- **Deployment**: Static HTML export deployed on Vercel
+- **Deployment**: Next.js application deployed on Vercel
 
 ---
 
