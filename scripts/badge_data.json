@@ -1,0 +1,101 @@
+[
+  {
+    "id": "1",
+    "requestedName": "AI Applications",
+    "actualTitle": "AI Applications",
+    "issuedDate": "November 04, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/4a4c1469-0582-43de-a22d-2ea7bfa7769c/public_url"
+  },
+  {
+    "id": "2",
+    "requestedName": "AI Literacy",
+    "actualTitle": "AI Literacy",
+    "issuedDate": "June 24, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/b0865319-ffc5-4588-ac44-298bab2580e7/public_url"
+  },
+  {
+    "id": "3",
+    "requestedName": "Artificial Intelligence Fundamentals",
+    "actualTitle": "Artificial Intelligence Fundamentals",
+    "issuedDate": "",
+    "recipient": "",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/30a0e6fb-d7f6-4284-9a2f-ffa07646f091/public_url"
+  },
+  {
+    "id": "4",
+    "requestedName": "Data Analytics for Machine Learning",
+    "actualTitle": "Data Analytics for Machine Learning",
+    "issuedDate": "June 23, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/881a97c8-89a2-40e9-9d6a-bec91e0428ed/public_url"
+  },
+  {
+    "id": "5",
+    "requestedName": "Getting Started with Artificial Intelligence",
+    "actualTitle": "Getting Started with Artificial Intelligence",
+    "issuedDate": "June 23, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/09843b85-6bb3-4f89-ad27-e92add068463/public_url"
+  },
+  {
+    "id": "6",
+    "requestedName": "Machine Learning for Data Science Projects",
+    "actualTitle": "Machine Learning for Data Science Projects",
+    "issuedDate": "November 04, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/7591d9c4-f941-46c6-a98c-f69e98198856/public_url"
+  },
+  {
+    "id": "7",
+    "requestedName": "Machine Learning Methods and Tools",
+    "actualTitle": "Machine Learning Methods and Tools",
+    "issuedDate": "June 22, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/267c746f-31be-4cd7-9c14-bc7ed4120467/public_url"
+  },
+  {
+    "id": "8",
+    "requestedName": "Natural Language Processing",
+    "actualTitle": "Natural Language Processing",
+    "issuedDate": "June 23, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/498f5194-c40c-4bba-9957-51c3454da7b6/public_url"
+  },
+  {
+    "id": "9",
+    "requestedName": "Supervised Learning Methods",
+    "actualTitle": "Supervised Learning Methods",
+    "issuedDate": "June 24, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/c428217e-c6f6-4b44-af9e-49e3806eb321/public_url"
+  },
+  {
+    "id": "10",
+    "requestedName": "Team Essentials for Designing AI Solutions",
+    "actualTitle": "Team Essentials for Designing AI Solutions",
+    "issuedDate": "June 24, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/178d005f-8826-4884-9b17-5168a756475c/public_url"
+  },
+  {
+    "id": "11",
+    "requestedName": "Unsupervised Learning Methods",
+    "actualTitle": "Unsupervised Learning Methods",
+    "issuedDate": "June 25, 2026",
+    "recipient": "Naman Lunia",
+    "issuer": "IBM SkillsBuild",
+    "url": "https://www.credly.com/badges/033afc50-6679-41c8-90f4-142602826875/public_url"
+  }
+]

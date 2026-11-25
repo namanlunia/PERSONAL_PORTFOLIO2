@@ -69,31 +69,36 @@ export function StickyNav() {
           top: 'var(--frame-gap)',
           left: 'var(--frame-gap)',
           right: 'var(--frame-gap)',
-          height: '72px',
+          height: 'var(--header-height)',
         }}
       >
-        <div className="w-full h-full flex items-center justify-between px-4 sm:px-8 md:px-[56px]">
-          {/* Left: Wordmark NL scrolls to top */}
-          <a
-            href="#hero"
-            className="font-heading font-bold text-xl tracking-wider text-text hover:text-accent no-underline focus-visible:outline-2 focus-visible:outline-accent"
-            aria-label="Scroll to top"
-          >
-            NL
-          </a>
+        <div
+          className="w-full h-full grid items-center px-4 sm:px-8 md:px-[56px]"
+          style={{ gridTemplateColumns: '1fr auto 1fr' }}
+        >
+          {/* Left Column: Wordmark NL at 28px, Chakra Petch 600 */}
+          <div className="flex items-center justify-start">
+            <a
+              href="#hero"
+              className="font-heading font-semibold text-[28px] tracking-wider text-text hover:text-accent no-underline focus-visible:outline-2 focus-visible:outline-accent leading-none"
+              aria-label="Scroll to top"
+            >
+              NL
+            </a>
+          </div>
 
-          {/* Desktop Nav: 01 About, 02 Roadmap, 03 Projects, 04 Achievements, 05 Contact */}
-          <nav className="hidden md:flex items-center" aria-label="Main Navigation">
-            <ul className="flex items-center gap-4 lg:gap-8 list-none m-0 p-0">
+          {/* Middle Column: Nav links truly centered (15-16px, uppercase, 40px gap, amber underline on active item) */}
+          <nav className="hidden lg:flex items-center justify-center" aria-label="Main Navigation">
+            <ul className="flex items-center gap-[40px] list-none m-0 p-0">
               {navItems.map((item) => {
                 const isActive = isHome && activeSection === item.id;
                 const href = isHome ? item.href : `/${item.href}`;
 
                 return (
-                  <li key={item.id}>
+                  <li key={item.id} className="flex items-center">
                     <a
                       href={href}
-                      className={`font-heading text-[11px] lg:text-xs font-semibold tracking-wider uppercase no-underline transition-none focus-visible:outline-2 focus-visible:outline-accent pb-1 whitespace-nowrap ${
+                      className={`font-heading text-[15px] font-semibold tracking-wider uppercase no-underline transition-none focus-visible:outline-2 focus-visible:outline-accent pb-1 whitespace-nowrap ${
                         isActive
                           ? 'text-text border-b-2 border-accent'
                           : 'text-muted hover:text-text'
@@ -107,18 +112,20 @@ export function StickyNav() {
             </ul>
           </nav>
 
-          {/* Mobile MENU button (appears below 768px only) */}
-          <div className="md:hidden">
-            <button
-              ref={toggleBtnRef}
-              type="button"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-expanded={isOpen}
-              aria-controls="mobile-nav-drawer"
-              className="px-3 py-1.5 border border-line bg-surface text-text font-heading text-xs font-semibold uppercase tracking-wider hover:border-accent hover:text-accent cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
-            >
-              MENU
-            </button>
+          {/* Right Column: Empty on desktop; on mobile/tablet (<1024px) the MENU button sits in the right column */}
+          <div className="flex items-center justify-end">
+            <div className="lg:hidden">
+              <button
+                ref={toggleBtnRef}
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-expanded={isOpen}
+                aria-controls="mobile-nav-drawer"
+                className="px-3 py-1.5 border border-line bg-surface text-text font-heading text-xs font-semibold uppercase tracking-wider hover:border-accent hover:text-accent cursor-pointer focus-visible:outline-2 focus-visible:outline-accent"
+              >
+                MENU
+              </button>
+            </div>
           </div>
         </div>
       </header>
@@ -132,7 +139,7 @@ export function StickyNav() {
           aria-modal="true"
           aria-label="Navigation Menu"
           className="fixed inset-0 bg-bg z-[60] flex flex-col justify-between p-6 overflow-y-auto"
-          style={{ top: 'calc(var(--frame-gap) + 72px)' }}
+          style={{ top: 'calc(var(--frame-gap) + var(--header-height))' }}
         >
           <div className="flex justify-between items-center pb-4 border-b border-line">
             <span className="font-heading text-xs font-semibold tracking-wider text-muted uppercase">
@@ -158,7 +165,7 @@ export function StickyNav() {
                     <a
                       href={href}
                       onClick={handleLinkClick}
-                      className={`block font-heading text-2xl font-semibold tracking-wider uppercase no-underline transition-none min-h-[44px] flex items-center ${
+                      className={`block font-heading text-xl sm:text-2xl font-semibold tracking-wider uppercase no-underline transition-none min-h-[44px] flex items-center ${
                         isActive
                           ? 'text-accent border-l-2 border-accent pl-3'
                           : 'text-text hover:text-accent'
@@ -173,7 +180,7 @@ export function StickyNav() {
           </nav>
 
           <div className="pt-4 border-t border-line text-xs font-heading text-muted uppercase tracking-wider">
-            <span>KEYBOARD SHORTCUTS: 1 TO 5</span>
+            <span>KEYBOARD SHORTCUTS: 1 TO 6</span>
           </div>
         </div>
       )}

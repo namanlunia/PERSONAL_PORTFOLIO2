@@ -8,18 +8,13 @@ export interface ProfileData {
     classTitle: string;
     guild: string;
     goal: string;
-    status: string;
+    pullRequests: string;
+    certificates: string;
     level: string;
   };
   about: {
-    bioParagraph: string;
+    paragraph: string;
   };
-  stats: {
-    name: string;
-    level: string;
-    filledSegments: number; // 1 to 5
-  }[];
-  loadout: string[];
 }
 
 export const profileData: ProfileData = {
@@ -27,52 +22,17 @@ export const profileData: ProfileData = {
   firstName: 'NAMAN',
   lastName: 'LUNIA',
   headline: 'First-year Computer Science student building real projects and working toward a career in game development.',
-  subline: 'B.Tech CSE with AI and ML specialisation, Newton School of Technology',
+  subline: 'B.Tech CSE with AI and ML specialisation, Newton School of Technology. Expected graduation: June 2030.',
   card: {
     classTitle: 'CSE, AI and ML',
     guild: 'Newton School of Technology',
-    goal: 'Game Developer',
-    status: 'Online',
-    level: '1st Year',
+    goal: 'Game developer',
+    pullRequests: '10 submitted',
+    certificates: '11',
+    level: '01',
   },
   about: {
-    bioParagraph:
-      'Naman is a first-year Computer Science and Engineering student specialising in AI and ML at Newton School of Technology. He is starting out in game development, understands core game engine concepts and how basic games are structured, and is also interested in robotics. He has built an automated IoT plant-watering device and develops websites with AI-assisted workflows. His goal is to become the best game developer he can be.',
+    paragraph:
+      'I am a first-year B.Tech Computer Science student with a specialisation in AI and ML at Newton School of Technology, graduating in June 2030. I am an aspiring game developer with a strong interest in robotics and IT. I have built an e-commerce website, the interface of an open-source program website and a Groq-powered LLM playground, and I have submitted ten pull requests to an open-source Python repository through my S&AI course. I am looking for game development internships where I can build real projects and learn from experienced engineers.',
   },
-  stats: [
-    {
-      name: 'Game development',
-      level: 'Learning',
-      filledSegments: 1,
-    },
-    {
-      name: 'Robotics and IoT',
-      level: 'Hands-on (one device built)',
-      filledSegments: 2,
-    },
-    {
-      name: 'AI and ML',
-      level: 'Coursework (5 certificates)',
-      filledSegments: 3,
-    },
-    {
-      name: 'Web development',
-      level: 'Building (2 active projects)',
-      filledSegments: 3,
-    },
-    {
-      name: 'Prompt engineering',
-      level: 'Practised',
-      filledSegments: 4,
-    },
-  ],
-  loadout: [
-    'Antigravity',
-    'OpenCode',
-    'Claude',
-    'GitHub',
-    'HTML',
-    'CSS',
-    'JavaScript',
-  ],
 };

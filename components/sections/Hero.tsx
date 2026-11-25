@@ -12,7 +12,7 @@ export function Hero() {
       aria-label="Character Profile"
       className="flex flex-col justify-center max-w-[1120px] mx-auto px-[clamp(32px,6vw,96px)] w-full"
       style={{
-        minHeight: 'calc(100svh - var(--frame-gap) * 2 - 72px)',
+        minHeight: 'calc(100svh - var(--frame-gap) * 2 - var(--header-height))',
         paddingBottom: '96px',
       }}
     >
@@ -20,7 +20,14 @@ export function Hero() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full my-auto py-8">
         {/* Left Column: Name & Statement */}
         <div className="lg:col-span-7 flex flex-col justify-center">
-          {/* Oversized Name: NAMAN LUNIA */}
+          {/* Top Badge: PLAYER PROFILE */}
+          <div className="self-start mb-6">
+            <span className="px-3 py-1 border border-line bg-surface font-heading text-[11px] font-semibold tracking-wider text-muted uppercase">
+              PLAYER PROFILE
+            </span>
+          </div>
+
+          {/* Oversized Name: NAMAN (solid) and LUNIA (outlined) */}
           <div className="flex flex-col select-none">
             <span className="font-heading font-semibold text-text uppercase leading-[0.88] text-[clamp(3rem,8vw,7rem)] block">
               {profileData.firstName}
@@ -30,27 +37,28 @@ export function Hero() {
             </span>
           </div>
 
-          {/* Real statement */}
+          {/* Exact Statement */}
           <p className="mt-6 font-body text-base md:text-lg text-text max-w-xl leading-relaxed">
             {profileData.headline}
           </p>
 
+          {/* Sub-line */}
           <p className="mt-2 font-heading text-xs tracking-wider uppercase text-muted">
             {profileData.subline}
           </p>
 
-          {/* Action Buttons */}
+          {/* Action Buttons: View projects & Get in touch */}
           <div className="mt-8 flex flex-wrap gap-4 items-center">
             <Button href="#projects" variant="primary">
-              VIEW PROJECTS
+              View projects
             </Button>
             <Button href="#contact" variant="secondary">
-              START A CONVERSATION
+              Get in touch
             </Button>
           </div>
         </div>
 
-        {/* Right Column: Player Card (max avatar 168px, exactly 5 rows, fits inside 1440x900 & 1280x720) */}
+        {/* Right Column: Player Card (max avatar 168px, 6 character rows, fits cleanly inside 1440x900 & 1280x720) */}
         <div className="lg:col-span-5 flex justify-center lg:justify-end">
           <div className="w-full max-w-sm mx-auto lg:ml-auto border border-line bg-surface/50 p-5">
             {/* Header: PLAYER CARD ... #0001 */}
@@ -67,7 +75,7 @@ export function Hero() {
             {/* Divider */}
             <div className="h-[1px] bg-line w-full mb-3" />
 
-            {/* 5 Rows: CLASS / GUILD / GOAL / STATUS / LEVEL */}
+            {/* 6 Character Sheet Rows */}
             <div className="space-y-2 font-heading text-xs tracking-wide">
               <div className="flex justify-between items-baseline border-b border-line/50 pb-1.5">
                 <span className="text-muted uppercase font-semibold">CLASS</span>
@@ -81,12 +89,13 @@ export function Hero() {
                 <span className="text-muted uppercase font-semibold">GOAL</span>
                 <span className="text-text font-medium text-right">{profileData.card.goal}</span>
               </div>
-              <div className="flex justify-between items-center border-b border-line/50 pb-1.5">
-                <span className="text-muted uppercase font-semibold">STATUS</span>
-                <span className="inline-flex items-center gap-1.5 text-text font-medium uppercase">
-                  <span className="w-2 h-2 bg-accent inline-block" aria-hidden="true" />
-                  {profileData.card.status}
-                </span>
+              <div className="flex justify-between items-baseline border-b border-line/50 pb-1.5">
+                <span className="text-muted uppercase font-semibold">PULL REQUESTS</span>
+                <span className="text-text font-medium text-right">{profileData.card.pullRequests}</span>
+              </div>
+              <div className="flex justify-between items-baseline border-b border-line/50 pb-1.5">
+                <span className="text-muted uppercase font-semibold">CERTIFICATES</span>
+                <span className="text-text font-medium text-right">{profileData.card.certificates}</span>
               </div>
               <div className="flex justify-between items-baseline pt-0.5">
                 <span className="text-muted uppercase font-semibold">LEVEL</span>

@@ -8,10 +8,11 @@ import { XpBar } from './XpBar';
 const sectionLabels: Record<string, string> = {
   hero: 'SEC // HERO',
   about: 'SEC // 01 ABOUT',
-  roadmap: 'SEC // 02 ROADMAP',
-  projects: 'SEC // 03 PROJECTS',
-  achievements: 'SEC // 04 CERTS',
-  contact: 'SEC // 05 CONTACT',
+  skills: 'SEC // 02 SKILLS',
+  contributions: 'SEC // 03 S&AI PRs',
+  projects: 'SEC // 04 PROJECTS',
+  education: 'SEC // 05 EDUCATION',
+  contact: 'SEC // 06 CONTACT',
 };
 
 export function HudFrame() {
@@ -20,9 +21,10 @@ export function HudFrame() {
   const activeSection = useActiveSection([
     'hero',
     'about',
-    'roadmap',
+    'skills',
+    'contributions',
     'projects',
-    'achievements',
+    'education',
     'contact',
   ]);
   const currentLabel = sectionLabels[activeSection] || 'SEC // HERO';
@@ -49,28 +51,46 @@ export function HudFrame() {
         </div>
       </div>
 
-      {/* 2. Top Mat Strip: Horizontal readouts and Segmented XP Bar (centered vertically) */}
+      {/* 2. Top Mat Strip: Corner readouts and Centered XP Bar */}
       <div
         className="fixed top-0 left-0 right-0 pointer-events-none z-[60] flex items-center justify-between px-6 md:px-8 lg:px-10"
         style={{ height: 'var(--frame-gap)' }}
       >
-        {/* Top left: current section name (horizontal, never rotated, hidden below 768px) */}
-        <span className="hidden md:block font-heading text-[11px] font-medium tracking-wider text-muted uppercase select-none">
-          {currentLabel}
-        </span>
-
-        {/* Center: Segmented XP Bar */}
-        <div className="flex items-center justify-center">
-          <XpBar />
+        {/* Top left: current section name at frame corner */}
+        <div className="hidden md:flex items-center min-w-[140px]">
+          <span className="font-heading text-[11px] font-medium tracking-wider text-muted uppercase select-none">
+            {currentLabel}
+          </span>
         </div>
 
-        {/* Top right: scroll percentage (horizontal, never rotated, hidden below 768px) */}
-        <span className="hidden md:block font-heading text-[11px] font-medium tracking-wider text-muted uppercase select-none">
-          SCROLL: {scrollPct}%
-        </span>
+        {/* Center: XP Bar (width min(480px, 60vw), margin-inline auto, scroll % to its right) */}
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div
+            className="hidden md:flex items-center justify-center gap-3 w-full"
+            style={{ maxWidth: 'min(480px, 60vw)', marginInline: 'auto' }}
+          >
+            <div className="flex-1">
+              <XpBar />
+            </div>
+            <span className="font-heading text-[11px] font-medium tracking-wider text-muted uppercase select-none whitespace-nowrap min-w-[36px] text-right">
+              {scrollPct}%
+            </span>
+          </div>
+          {/* Mobile XP Bar */}
+          <div className="md:hidden">
+            <XpBar />
+          </div>
+        </div>
+
+        {/* Top right: scroll percentage at frame corner */}
+        <div className="hidden md:flex items-center justify-end min-w-[140px]">
+          <span className="font-heading text-[11px] font-medium tracking-wider text-muted uppercase select-none">
+            SCROLL: {scrollPct}%
+          </span>
+        </div>
       </div>
 
-      {/* 3. Bottom Mat Strip: Horizontal readouts (never rotated, hidden below 768px) */}
+      {/* 3. Bottom Mat Strip: Horizontal readouts at frame corners */}
       <div
         className="fixed bottom-0 left-0 right-0 pointer-events-none z-[60] flex items-center justify-between px-6 md:px-8 lg:px-10"
         style={{ height: 'var(--frame-gap)' }}

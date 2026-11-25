@@ -4,10 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { projectsData } from '@/content/projects';
 import { Panel } from '@/components/ui/Panel';
-import { StatusTag, ToolTag } from '@/components/ui/Tag';
-import { GarmentSprite } from '@/components/pixel/Garment';
-import { TrophySprite } from '@/components/pixel/Trophy';
-import { PlantSprite } from '@/components/pixel/Plant';
+import { ToolTag } from '@/components/ui/Tag';
 import { Divider } from '@/components/ui/Divider';
 
 interface ProjectPageProps {
@@ -36,7 +33,7 @@ export async function generateMetadata({
 
   return {
     title: `${project.title} // Project File // Naman Lunia`,
-    description: project.overview,
+    description: project.problem,
   };
 }
 
@@ -53,17 +50,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const nextProject =
     currentIndex < projectsData.length - 1 ? projectsData[currentIndex + 1] : null;
 
-  const renderSprite = (spriteType: 'garment' | 'trophy' | 'plant') => {
-    switch (spriteType) {
-      case 'garment':
-        return <GarmentSprite className="w-16 h-16 md:w-20 md:h-20" />;
-      case 'trophy':
-        return <TrophySprite className="w-16 h-16 md:w-20 md:h-20" />;
-      case 'plant':
-        return <PlantSprite className="w-16 h-16 md:w-20 md:h-20" />;
-    }
-  };
-
   return (
     <article className="py-12 md:py-20 px-4 md:px-6 max-w-[1120px] mx-auto w-full">
       {/* Return link */}
@@ -72,28 +58,25 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           href="/#projects"
           className="font-heading text-xs font-semibold uppercase tracking-wider text-muted hover:text-accent underline transition-none inline-flex items-center gap-2 min-h-[44px] focus-visible:outline-2 focus-visible:outline-accent"
         >
-          [← RETURN TO QUEST LOG]
+          [← RETURN TO PROJECTS]
         </Link>
       </div>
 
       {/* Project Header Banner */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-line mb-8">
-        <div className="flex items-start gap-4">
-          <div className="p-2 bg-surface-2 border border-line shrink-0" aria-hidden="true">
-            {renderSprite(project.spriteType)}
+        <div>
+          <div className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-1">
+            PROJECT {project.index} {'//'} ARCHIVE
           </div>
-          <div>
-            <div className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-1">
-              QUEST {project.index} {'//'} FILE ARCHIVE
-            </div>
-            <h1 className="font-heading text-2xl md:text-4xl font-semibold uppercase tracking-wide text-text">
-              {project.title}
-            </h1>
-          </div>
+          <h1 className="font-heading text-2xl md:text-4xl font-semibold uppercase tracking-wide text-text">
+            {project.title}
+          </h1>
         </div>
 
         <div className="shrink-0">
-          <StatusTag status={project.status} variant={project.statusVariant} />
+          <span className="px-3 py-1 border border-line bg-surface font-heading text-xs font-semibold text-accent uppercase tracking-wider">
+            {project.status}
+          </span>
         </div>
       </div>
 
@@ -102,29 +85,29 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         {/* Main Content */}
         <div className="lg:col-span-8 space-y-8">
           <Panel variant="surface">
-            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-3 pb-2 border-b border-line">
-              EXECUTIVE BRIEF {'//'} OVERVIEW
+            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-3 pb-2 border-b border-line">
+              PROBLEM STATEMENT
             </h2>
-            <p className="font-body text-base md:text-lg text-text leading-relaxed">
-              {project.overview}
+            <p className="font-body text-base md:text-lg text-text leading-relaxed m-0">
+              {project.problem}
             </p>
           </Panel>
 
           <Panel variant="surface">
-            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-3 pb-2 border-b border-line">
-              PRIMARY OBJECTIVE {'//'} GOAL
+            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-3 pb-2 border-b border-line">
+              SOLUTION AND ARCHITECTURE
             </h2>
-            <p className="font-body text-base text-text leading-relaxed">
-              {project.goal}
+            <p className="font-body text-base text-muted leading-relaxed m-0">
+              {project.solution}
             </p>
           </Panel>
 
           <Panel variant="surface">
-            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-3 pb-2 border-b border-line">
-              NEXT OPERATIONAL PHASE
+            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-3 pb-2 border-b border-line">
+              MY CONTRIBUTION
             </h2>
-            <p className="font-body text-base text-text leading-relaxed">
-              {project.nextStep}
+            <p className="font-body text-base text-text leading-relaxed m-0">
+              {project.contribution}
             </p>
           </Panel>
         </div>
@@ -132,19 +115,19 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         {/* Sidebar */}
         <div className="lg:col-span-4 space-y-6">
           <Panel variant="surface-2">
-            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-4 pb-2 border-b border-line">
-              SYSTEM TOOLS {'//'} STACK
+            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-4 pb-2 border-b border-line">
+              TECH STACK
             </h2>
             <div className="flex flex-wrap gap-2">
-              {project.tools.map((tool) => (
-                <ToolTag key={tool} name={tool} />
+              {project.stack.map((item) => (
+                <ToolTag key={item} name={item} />
               ))}
             </div>
           </Panel>
 
           <Panel variant="surface-2">
-            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-muted mb-4 pb-2 border-b border-line">
-              LINK DIRECTORY
+            <h2 className="font-heading text-xs font-semibold uppercase tracking-wider text-accent mb-4 pb-2 border-b border-line">
+              LINKS & REPOSITORIES
             </h2>
             <div className="space-y-3">
               {project.links.map((link, idx) => (
@@ -154,11 +137,17 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   </span>
                   <a
                     href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="font-heading text-sm font-semibold text-accent underline tracking-wide min-h-[44px] inline-flex items-center focus-visible:outline-2 focus-visible:outline-accent"
-                    {...(link.isPlaceholder ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
                   >
-                    {link.label} {link.isPlaceholder && '(PENDING LINK)'}
+                    {link.label} ↗
                   </a>
+                  {link.note && (
+                    <span className="text-xs text-muted italic mt-0.5">
+                      {link.note}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -168,7 +157,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       <Divider />
 
-      {/* Prev / Next Quest Navigation */}
+      {/* Prev / Next Navigation */}
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-line font-heading text-xs uppercase tracking-wider">
         <div>
           {prevProject ? (
@@ -179,7 +168,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               ← PREV: {prevProject.title}
             </Link>
           ) : (
-            <span className="text-line">FIRST QUEST FILE</span>
+            <span className="text-line">FIRST PROJECT</span>
           )}
         </div>
 
@@ -192,7 +181,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               NEXT: {nextProject.title} →
             </Link>
           ) : (
-            <span className="text-line">FINAL QUEST FILE</span>
+            <span className="text-line">FINAL PROJECT</span>
           )}
         </div>
       </div>

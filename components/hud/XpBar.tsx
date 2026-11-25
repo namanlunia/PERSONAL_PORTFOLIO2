@@ -10,15 +10,16 @@ export function XpBar() {
 
   return (
     <>
-      {/* Desktop / Tablet: 20 flat amber segments, 6px high, centered in top mat strip */}
+      {/* Desktop / Tablet: 20 flat amber segments, 6px high, filling from left to right */}
       <div
-        className="hidden md:flex items-center gap-[3px]"
+        className="hidden md:grid w-full h-1.5 gap-[3px] items-center"
+        style={{ gridTemplateColumns: 'repeat(20, minmax(0, 1fr))' }}
         aria-label={`Scroll progress: ${Math.round(progress * 100)}%`}
       >
         {Array.from({ length: totalSegments }).map((_, idx) => (
           <span
             key={idx}
-            className={`w-2.5 lg:w-3 h-1.5 border rounded-none transition-none ${
+            className={`h-1.5 border rounded-none transition-none ${
               idx < activeCount
                 ? 'bg-accent border-accent'
                 : 'bg-transparent border-line'

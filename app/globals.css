@@ -12,6 +12,7 @@
   --accent: #E5A03A;
   --amber-dim: #8A6224;
   --frame-gap: 32px;
+  --header-height: 96px;
 }
 
 @media (max-width: 1279px) {
@@ -20,9 +21,16 @@
   }
 }
 
+@media (max-width: 1023px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
 @media (max-width: 767px) {
   :root {
     --frame-gap: 10px;
+    --header-height: 64px;
   }
 }
 
@@ -30,7 +38,7 @@ html {
   background-color: var(--bg);
   color: var(--text);
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--frame-gap) + 72px + 16px);
+  scroll-padding-top: calc(var(--frame-gap) + var(--header-height) + 16px);
 }
 
 body {
