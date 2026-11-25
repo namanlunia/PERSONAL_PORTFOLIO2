@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 :root {
+  --font-ibm-plex: "IBM Plex Sans", system-ui, sans-serif;
+  --font-chakra: "Chakra Petch", system-ui, sans-serif;
   --bg: #0F1214;
   --surface: #161B1E;
   --surface-2: #1C2226;

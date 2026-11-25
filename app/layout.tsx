@@ -1,22 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { Chakra_Petch, IBM_Plex_Sans } from 'next/font/google';
+import '@fontsource/chakra-petch/latin-500.css';
+import '@fontsource/chakra-petch/latin-600.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
 import './globals.css';
 import { HudFrame } from '@/components/hud/Frame';
 import { StickyNav } from '@/components/hud/StickyNav';
-
-const chakraPetch = Chakra_Petch({
-  weight: ['500', '600', '700'],
-  subsets: ['latin'],
-  variable: '--font-chakra',
-  display: 'swap',
-});
-
-const ibmPlexSans = IBM_Plex_Sans({
-  weight: ['400', '500'],
-  subsets: ['latin'],
-  variable: '--font-ibm-plex',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: 'Naman Lunia // Player Profile & Portfolio',
@@ -57,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${chakraPetch.variable} ${ibmPlexSans.variable} scroll-smooth`}
+      className="scroll-smooth"
     >
       <body className="min-h-screen bg-bg text-text selection:bg-accent selection:text-bg">
         {/* Skip to Content link for keyboard accessibility */}
@@ -74,11 +63,11 @@ export default function RootLayout({
         {/* Fixed Header Nav with Wordmark NL, Nav Links, & Mobile Drawer */}
         <StickyNav />
 
-        {/* Main Content Area: offset to start right below the fixed 72px header */}
+        {/* Main Content Area: offset to start right below the fixed header */}
         <main
           id="main-content"
           tabIndex={-1}
-          className="focus:outline-none pt-[calc(var(--frame-gap)+72px)] pb-[var(--frame-gap)]"
+          className="focus:outline-none pt-[calc(var(--frame-gap)+var(--header-height))] pb-[var(--frame-gap)]"
         >
           {children}
         </main>
